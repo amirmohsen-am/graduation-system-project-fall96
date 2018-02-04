@@ -9,16 +9,10 @@
 {% endblock %}
 
 {% block content %}
-    This is deisgner page
+    <h1 class="mt-5">Process list</h1>
+    <p class="lead">Here you can see the Process list.</p>
 
-{#    {% for Proc in Process %}#}
-{#    <h2>#}
-{#      <a href="{{ story.get_absolute_url }}">#}
-{#        {{ story.headline|upper }}#}
-{#      </a>#}
-{#    </h2>#}
-{#    <p>{{ story.tease|truncatewords:"100" }}</p>#}
-{#    {% endfor %}#}
+
     <table class="table">
       <thead class="thead-dark">
         <tr>
@@ -29,24 +23,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
+            {% for proc in processes %}
+                <tr>
+                  <th scope="row">1</th>
+                  <td> <a href="{% url 'Process' proc.id %}">{{proc.name}}</a></td>
+                  <td>{{ proc.task_set.all|length }}</td>
+                  <td>@mdo</td>
+                </tr>
+            {% endfor %}
       </tbody>
     </table>
 
