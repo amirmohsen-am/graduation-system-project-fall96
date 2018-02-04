@@ -5,3 +5,6 @@ from django.shortcuts import render
 
 def index(request):
     return render(request, 'main/base.html')
+
+def designer_view(request):
+    return render(request, 'main/designer.html')
