@@ -5,8 +5,8 @@ from django.db import models
 
 class Process(models.Model):
     name = models.CharField(max_length=100, blank=False)
-    task_start = models.ForeignKey('Task', blank=True, related_name='+')
-    task_end = models.ForeignKey('Task', blank=True, related_name='+')
+    task_start = models.ForeignKey('Task', blank=True, null=True, related_name='+')
+    task_end = models.ForeignKey('Task', blank=True, null=True, related_name='+')
 
 
 class Task(models.Model):
