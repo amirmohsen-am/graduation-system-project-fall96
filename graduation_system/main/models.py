@@ -2,6 +2,8 @@ from django.db import models
 
 
 # Create your models here.
+from django.forms import ModelForm
+
 
 class Process(models.Model):
     name = models.CharField(max_length=100, blank=False)
@@ -33,3 +35,10 @@ class TaskInstance(models.Model):
 
     def __str__(self):
         return self.name + "instance-" + self.id
+
+
+class ProcessForm(ModelForm):
+    class Meta:
+        model = Process
+        fields = ['name']
+
