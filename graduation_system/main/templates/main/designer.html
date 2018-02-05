@@ -30,7 +30,7 @@
                   <th scope="row">1</th>
                   <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
                   <td>{{ proc.task_set.all|length }}</td>
-                  <td><a href="{% url 'process-select' proc.id %}" type="button" class="btn btn-primary" > Add Process </a></td>
+                  <td><a href="{% url 'process-select' proc.id %}" type="button" class="btn btn-primary" > Select Process </a></td>
                 </tr>
             {% endfor %}
       </tbody>
