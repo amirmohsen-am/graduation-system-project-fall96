@@ -1,6 +1,6 @@
 {% extends 'main/base.html' %}
 
-{% block title %} Designer {% endblock %}
+{% block title %} Process {% endblock %}
 
 {% block style %}
 {% endblock %}
@@ -17,9 +17,10 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-            <button type="submit" class="btn btn-secondary btn-lg btn-block" >Submit</button>
+            <a type="submit" class="btn btn-secondary btn-lg btn-block" >Submit</a>
         {% endbuttons %}
     </form>
+    <a type="submit" class="btn btn-secondary btn-lg btn-block" href="{% url 'task-add' process.id%}"> Add Task</a>
 
 {#    <button type="button" class="btn btn-secondary btn-lg btn-block" >Submit</button>#}
 
