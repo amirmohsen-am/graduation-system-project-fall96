@@ -26,7 +26,7 @@
             {% for proc in processes %}
                 <tr>
                   <th scope="row">1</th>
-                  <td> <a href="{% url 'Process' proc.id %}">{{proc.name}}</a></td>
+                  <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
                   <td>{{ proc.task_set.all|length }}</td>
                   <td>@mdo</td>
                 </tr>

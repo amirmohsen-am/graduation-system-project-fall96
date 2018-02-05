@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^designer$', views.designer_view, name='designer-view'),
+    url(r'^process/(?P<process_id>\d+)$', views.process_view, name='process-view')
 ]
