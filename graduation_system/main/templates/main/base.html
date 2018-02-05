@@ -2,6 +2,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -19,6 +20,7 @@
 
     {% include 'main/static-links.html' %}
     <!-- Custom styles for this template -->
+    <link href="{% static 'main/Account.css'%}" rel="stylesheet">
     <link href="{% static 'main/base.css'%}" rel="stylesheet">
 
     {% block style %}
@@ -32,8 +34,11 @@
 
 <header>
     <!-- Fixed navbar -->
+
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+
         <a class="navbar-brand" href="#">Fixed navbar</a>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -49,12 +54,51 @@
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
             </ul>
-            <form class="form-inline mt-2 mt-md-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-left: 200px">
+                        <span class="glyphicon glyphicon-user"></span> 
+                        <strong>Nombre</strong>
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="padding-right:500px , ">
+                        <li>
+                            <div class="navbar-login">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="text-center">
+                                            <span class="glyphicon glyphicon-user icon-size"></span>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <p class="text-left"><strong>Nombre Apellido</strong></p>
+                                        <p class="text-left small">correoElectronico@email.com</p>
+                                        <p class="text-left">
+                                            <a href="#" class="btn btn-primary btn-block btn-sm">Actualizar Datos</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="navbar-login navbar-login-session">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p>
+                                            <a href="#" class="btn btn-danger btn-block">Cerrar Sesion</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <a class="navbar-brand" style="width: 5%"></a>
         </div>
     </nav>
+
 </header>
 
 <!-- Begin page content -->
