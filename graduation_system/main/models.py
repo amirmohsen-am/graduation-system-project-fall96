@@ -42,3 +42,8 @@ class ProcessForm(ModelForm):
         model = Process
         fields = ['name']
 
+class TaskForm(ModelForm):
+    class Meta:
+        model = Task
+        fields = '__all__'
+

@@ -8,7 +8,7 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from main.models import Process, Task, ProcessForm
+from main.models import Process, Task, ProcessForm , TaskForm
 from django.urls import reverse
 
 @login_required(login_url='/login/')
@@ -32,5 +32,6 @@ def process_view(request, process_id):
 @login_required(login_url='/login/')
 def task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
-    return render(request, 'main/task.html', {'task': task})
+    form = TaskForm(instance=task)
+    return render(request, 'main/task.html', {'task': task, 'form': form})
 
