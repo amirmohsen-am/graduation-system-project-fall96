@@ -20,7 +20,6 @@
             <a type="submit" class="btn btn-secondary btn-lg btn-block" >Submit</a>
         {% endbuttons %}
     </form>
-    <a type="submit" class="btn btn-secondary btn-lg btn-block" href="{% url 'task-add' process.id%}"> Add Task</a>
 
 {#    <button type="button" class="btn btn-secondary btn-lg btn-block" >Submit</button>#}
 
@@ -45,5 +44,5 @@
             {% endfor %}
       </tbody>
     </table>
-
+    <a type="submit" class="btn btn-primary" href="{% url 'task-add' process.id%}"> Add Task</a>
 {% endblock %}

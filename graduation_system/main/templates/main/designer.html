@@ -13,7 +13,7 @@
     <p class="lead">Here you can see the Process list.</p>
 
 
-    <a type="button" class="btn btn-secondary btn-lg btn-block" href="{% url 'process-add'%}">Add Process</a>
+    <a type="button" class="btn btn-primary" href="{% url 'process-add'%}">Add Process</a>
     <div style="height: 30px"></div>
     <table class="table">
       <thead class="thead-dark">
@@ -21,7 +21,7 @@
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Num of tasks</th>
-          <th scope="col">Nothing</th>
+          <th scope="col"> </th>
         </tr>
       </thead>
       <tbody>
@@ -30,7 +30,7 @@
                   <th scope="row">1</th>
                   <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
                   <td>{{ proc.task_set.all|length }}</td>
-                  <td>@mdo</td>
+                  <td><a href="url 'add-process' proc.id" type="button" class="btn btn-primary" > Add Process </a></td>
                 </tr>
             {% endfor %}
       </tbody>
