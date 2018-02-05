@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^process/(?P<process_id>\d+)$', views.process_view, name='process-view'),
     url(r'^task/(?P<task_id>\d+)$', views.task_view, name='task-view'),
     url(r'^task_add/(?P<process_id>\d+$)', views.task_add, name='task-add'),
+    url(r'^process_add/', views.task_add, name='process-add'),
 ]

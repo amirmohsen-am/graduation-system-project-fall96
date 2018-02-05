@@ -30,7 +30,8 @@ def process_view(request, process_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Process was successfully edited')
-            return redirect(reverse('process-view'))
+            # return redirect(reverse('process-view'))
+            return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = ProcessForm(instance=process)
 
@@ -60,10 +61,22 @@ def task_add(request, process_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Task has been created')
-            return redirect(reverse('task-view'))
+            return redirect(reverse('process-view', args=[process_id]))
+            # return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = TaskForm()
-    form.process = process
     form.fields["process"].initial = process
-    form.fields["process"].disabled = True
+    form.fields['process'].widget.attrs['readonly'] = True
     return render(request, 'main/task_add.html', {'form': form})
+
+@login_required(login_url='/login/')
+def process_add(request):
+    if request.method == 'POST':
+        form = ProcessForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Process has been created')
+            return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        form = ProcessForm()
+    return render(request, 'main/process_add.html', {'form': form})
