@@ -107,3 +107,8 @@ def student_view(request):
         messages.error(request, 'You are not a student')
         return redirect(request.META.get('HTTP_REFERER'))
     return render(request, 'main/student_view.html', {'student': user.student})
+
+@login_required()
+def task_graph(request, process_id):
+    process = get_object_or_404(Process, id=process_id)
+    return render(request, 'main/task-graph.html', {'process': process})
