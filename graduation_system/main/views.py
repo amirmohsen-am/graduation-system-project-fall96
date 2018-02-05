@@ -87,8 +87,13 @@ def process_add(request):
 # new instance of process
 @login_required(login_url='/login/')
 def process_select(request, process_id):
+    user = request.user
+    if user.student is None:
+        messages.error(request, 'You are not a student')
+        return redirect(request.META.get('HTTP_REFERER'))
+
     process = get_object_or_404(Process, id=process_id)
-    process_instance = ProcessInstance(student=request.user, process=process)
+    process_instance = ProcessInstance(student=user.student, process=process)
     process_instance.save()
     for task in process.task_set.all():
         TaskInstance.objects.create(process_instance=process_instance, task=task)
