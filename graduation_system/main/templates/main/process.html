@@ -9,5 +9,34 @@
 {% endblock %}
 
 {% block content %}
-    {{ process.name }}
+    <h1 class="mt-5">{{ form.as_p }}</h1>
+{#    <p class="lead">Here you can see the details.</p>#}
+
+    <button type="button" class="btn btn-secondary btn-lg btn-block" >Submit</button>
+
+
+
+    <div style="height: 30px"></div>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Nothing</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for task in process.task_set.all %}
+                <tr>
+                  <th scope="row">1</th>
+                  <td> <a href="{% url 'process-view' task.id %}">{{ task.name }}</a></td>
+{#                    TODO    #}
+                  <td>{{ task.description }}</td>
+                  <td>@mdo</td>
+                </tr>
+            {% endfor %}
+      </tbody>
+    </table>
+
 {% endblock %}

@@ -23,7 +23,8 @@ def designer_view(request):
 
 def process_view(request, process_id):
     process = get_object_or_404(Process, id=process_id)
-    return render(request, 'main/process.html', {'process': process})
+    form = ProcessForm(instance=process)
+    return render(request, 'main/process.html', {'process': process, 'form': form})
 
 
 
