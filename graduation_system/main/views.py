@@ -8,8 +8,9 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from main.models import Process, Task, ProcessForm , TaskForm
+from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance
 from django.urls import reverse
+
 
 @login_required(login_url='/login/')
 def index(request):
@@ -69,6 +70,7 @@ def task_add(request, process_id):
     form.fields['process'].widget.attrs['readonly'] = True
     return render(request, 'main/task_add.html', {'form': form})
 
+
 @login_required(login_url='/login/')
 def process_add(request):
     if request.method == 'POST':
@@ -80,3 +82,23 @@ def process_add(request):
     else:
         form = ProcessForm()
     return render(request, 'main/process_add.html', {'form': form})
+
+
+# new instance of process
+@login_required(login_url='/login/')
+def process_select(request, process_id):
+    process = get_object_or_404(Process, id=process_id)
+    process_instance = ProcessInstance(student=request.user, process=process)
+    process_instance.save()
+    for task in process.task_set.all():
+        TaskInstance.objects.create(process_instance=process_instance, task=task)
+    messages.success(request, 'Process has been instantiated')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def student_view(request):
+    user = request.user
+    if user.student is None:
+        messages.error(request, 'You are not a student')
+        return redirect(request.META.get('HTTP_REFERER'))
+    return render(request, 'main/student_view.html', {'student': user.student})
