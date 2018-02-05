@@ -9,4 +9,29 @@
 {% endblock %}
 
 {% block content %}
+    <h1 class="mt-5">Process list</h1>
+    <p class="lead">Here you can see the Process list.</p>
+
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Num of tasks</th>
+          <th scope="col">Nothing</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for proc in processes %}
+                <tr>
+                  <th scope="row">1</th>
+                  <td> <a href="{% url 'Process' proc.id %}">{{proc.name}}</a></td>
+                  <td>{{ proc.task_set.all|length }}</td>
+                  <td>@mdo</td>
+                </tr>
+            {% endfor %}
+      </tbody>
+    </table>
+
 {% endblock %}
