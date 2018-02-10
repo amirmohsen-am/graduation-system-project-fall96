@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Designer {% endblock %}
+
+{% block style %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+{% block content %}
+    {% for task_instance in task_instances %}
+        {{ task_instance.get_status_display }}
+    {% endfor %}
+{% endblock %}
