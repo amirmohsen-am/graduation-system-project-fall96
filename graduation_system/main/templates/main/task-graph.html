@@ -1,5 +1,4 @@
 
-  {% extends 'main/base.html' %}
 
     {% block title %} Designer {% endblock %}
 
@@ -968,13 +967,18 @@
       {% endfor %}
 
        var fsm = new StateMachine.factory({
-        transitions: temp
+        transitions: temp,
+        data: function(color) {      //  <-- use a method that can be called for each instance
+        return {
+            color: color
+        }
+    },
       });
 
-
+    var a = new fsm('blue')
     d3.select("#graph").graphviz()
         .fade(false)
-        .renderDot(  visualize(fsm, { name: 'door', orientation: 'horizontal' }));
+        .renderDot(  visualize(a, { name: 'door', orientation: 'horizontal' }));
      {#visualize(fsm)#}
 
     /***/ })

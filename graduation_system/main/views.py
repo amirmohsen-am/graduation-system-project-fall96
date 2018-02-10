@@ -36,7 +36,6 @@ def process_view(request, process_id):
             return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = ProcessForm(instance=process)
-
     return render(request, 'main/process.html', {'process': process, 'form': form})
 
 
@@ -116,4 +115,14 @@ def student_view(request):
 @login_required(login_url='/login/')
 def task_graph(request, process_id):
     process = get_object_or_404(Process, id=process_id)
-    return render(request, 'main/task-graph.html', {'process': process})
+    return render(request, 'main/student_view_timeline.html', {'process': process})
+
+
+# to be changed
+@login_required(login_url='/login/')
+def student_view_timeline(request):
+    user = request.user
+    if user.student is None:
+        messages.error(request, 'You are not a student')
+        return redirect(request.META.get('HTTP_REFERER'))
+    return render(request, 'main/student_view.html', {'student': user.student})
