@@ -124,30 +124,6 @@ def student_view(request):
         return redirect(request.META.get('HTTP_REFERER'))
     return render(request, 'main/student_view.html', {'student': user.student, 'processes': processes})
 
-
-@login_required(login_url='/login/')
-def task_graph(request, process_id):
-    process = get_object_or_404(ProcessInstance, id=process_id)
-    ordered_task = []
-    p = process.process
-    t = p.task_start
-    i=1
-    while 1:
-        ordered_task.append(t)
-        t = t.next_task_accept
-        if t.end_task == True:
-            ordered_task.append(t)
-            break
-   # return render(request, 'main/task-graph.html', {'process': process.process})
-    return render(request, 'main/student_view_timeline.html', {'process': process, 'ordered_task': ordered_task})
-
-# to be changed
-@login_required(login_url='/login/')
-def student_view_timeline(request):
-    process = get_object_or_404(ProcessInstance, id=process_id)
-    return render(request, 'main/student_view_timeline.html', {'process': process})
-
-
 @login_required(login_url='/login/')
 def staff_view(request):
     user = request.user
@@ -155,6 +131,41 @@ def staff_view(request):
     group_names = user.groups.all()
     task_instances = TaskInstance.objects.all().filter(task__group__in=group_names)
     return render(request, 'main/staff-view.html', {'task_instances': task_instances})
+
+
+@login_required(login_url='/login/')
+def task_graph(request, process_id):
+    process = get_object_or_404(ProcessInstance, id=process_id)
+    ordered_task = []
+    after_current = []
+    p = process.process
+    t = p.task_start
+    b = 2
+    while 1:
+        if t == process.current_task.task:
+            b = 1
+        if b == 2:
+            ordered_task.append(t)
+        if b == 0:
+            after_current.append(t)
+        if b == 1:
+            b = 0
+        t = t.next_task_accept
+        if t.end_task == True:
+            if b == 2:
+                ordered_task.append(t)
+            if b == 0:
+                after_current.append(t)
+            break
+    #return render(request, 'main/task-graph.html', {'process': process})
+    return render(request, 'main/student_view_timeline.html', {'process': process, 'ordered_task': ordered_task, 'cur': process.current_task.task, 'after': after_current})
+
+# to be changed
+@login_required(login_url='/login/')
+def student_view_timeline(request):
+    process = get_object_or_404(ProcessInstance, id=process_id)
+    return render(request, 'main/student_view_timeline.html', {'process': process})
+
 
 @login_required(login_url='/login/')
 def process_instance_view(request, p_id):
