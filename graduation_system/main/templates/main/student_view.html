@@ -24,7 +24,7 @@
             {% for proc_instance in student.processinstance_set.all  %}
                 <tr>
                   <th scope="row">1</th>
-                  <td> <a href="{% url 'process-view' proc_instance.process.id %}">{{ proc_instance.process.name }}</a></td>
+                  <td> <a href="{% url 'process-instance-view' proc_instance.process.id %}">{{ proc_instance.process.name }}</a></td>
                   <td>{{ proc_instance.process.task_set.all|length }}</td>
                   <td></td>
                 </tr>

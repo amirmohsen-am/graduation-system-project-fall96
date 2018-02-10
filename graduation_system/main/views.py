@@ -136,7 +136,9 @@ def staff_view(request):
 @login_required(login_url='/login/')
 def process_instance_view(request, p_id):
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
-    return render(request, 'main/process-instance.html', {'process_instance': process_instance})
+    process = get_object_or_404(Process, id=process_instance.process.id)
+    form = ProcessForm(instance=process)
+    return render(request, 'main/process-instance.html', {'process_instance': process_instance , 'form' : form})
 
 @login_required(login_url='/login/')
 def account_view(request):
