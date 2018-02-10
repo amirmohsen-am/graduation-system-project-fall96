@@ -101,7 +101,12 @@ def process_select(request, process_id):
     if len(instances) >= 1:
         messages.error(request, 'Student has selected this process before')
         return redirect(request.META.get('HTTP_REFERER'))
-    process_instance = ProcessInstance(student=user.student, process=process)
+
+    if process.task_start is None:
+        messages.error(request, 'Please specify starting task for this process')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    process_instance = ProcessInstance(student=user.student, process=process, current_task=process.task_start)
     process_instance.save()
     for task in process.task_set.all():
         TaskInstance.objects.create(process_instance=process_instance, task=task)
@@ -132,10 +137,28 @@ def staff_view(request):
     task_instances = TaskInstance.objects.all().filter(task__group__in=group_names)
     return render(request, 'main/staff-view.html', {'task_instances': task_instances})
 
+
 @login_required(login_url='/login/')
 def process_instance_view(request, p_id):
+    user = request.user
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
+    current_task = process_instance.current_task
+    if request.method == 'POST':
+        if user.student is not None:
+            if request.POST['action'] == 'accept':
+                messages.success(request, 'Task successfully accepted')
+                process_instance.accept()
+            if request.POST['action'] == 'reject':
+                messages.success(request, 'Task successfully rejected')
+                process_instance.reject()
+            if request.POST['action'] == 'staff_done':
+                current_task.status = 'student_pending'
+        else:
+            if request.POST['action'] == 'student_done':
+                current_task.status = 'staff_pending'
+
     return render(request, 'main/process-instance.html', {'process_instance': process_instance})
+
 
 @login_required(login_url='/login/')
 def account_view(request):
