@@ -16,7 +16,7 @@ from django.urls import reverse
 
 @login_required(login_url='/login/')
 def index(request):
-    return render(request, 'main/base.html')
+    return render(request, 'main/index.html')
 
 
 @login_required(login_url='/login/')
@@ -117,10 +117,11 @@ def process_select(request, process_id):
 @login_required(login_url='/login/')
 def student_view(request):
     user = request.user
+    processes = Process.objects.all()
     if user.student is None:
         messages.error(request, 'You are not a student')
         return redirect(request.META.get('HTTP_REFERER'))
-    return render(request, 'main/student_view.html', {'student': user.student})
+    return render(request, 'main/student_view.html', {'student': user.student , 'processes' : processes})
 
 
 @login_required(login_url='/login/')
@@ -157,7 +158,9 @@ def process_instance_view(request, p_id):
             if request.POST['action'] == 'student_done':
                 current_task.status = 'staff_pending'
 
-    return render(request, 'main/process-instance.html', {'process_instance': process_instance})
+    process = process_instance.process
+    form = ProcessForm(instance=process)
+    return render(request, 'main/process-instance.html', {'process_instance': process_instance , 'form' : form})
 
 
 @login_required(login_url='/login/')

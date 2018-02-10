@@ -9,5 +9,8 @@
 {% endblock %}
 
 {% block content %}
-    {{ process_instance.process.name }}
+    {% with process=process_instance.process%}
+            {% include "main/process_list.html" %}
+    {% endwith %}
+    <h4> Current task : {{ process_instance.current_task }} </h4>
 {% endblock %}

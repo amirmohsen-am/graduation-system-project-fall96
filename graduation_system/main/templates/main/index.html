@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Designer {% endblock %}
+
+{% block style %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="mt-5">Welcome</h1>
+    <p class="lead">Here is the first page.</p>
+
+    {% if user.student %}
+        <meta http-equiv="refresh" content="0;{% url 'student-view'%}" />
+    {% else %}
+        <meta http-equiv="refresh" content="0;{% url 'designer-view'%}" />
+    {% endif %}
+
+{% endblock %}
