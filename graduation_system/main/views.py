@@ -119,18 +119,28 @@ def student_view(request):
 
 @login_required(login_url='/login/')
 def task_graph(request, process_id):
-    process = get_object_or_404(Process, id=process_id)
-    return render(request, 'main/student_view_timeline.html', {'process': process})
-
+    process = get_object_or_404(ProcessInstance, id=process_id)
+    ordered_task = []
+    p = process.process
+    t = p.task_start
+    i=1
+    while 1:
+        ordered_task.append(t)
+        t = t.next_task_accept
+        if t.name == p.task_end.name:
+            ordered_task.append(t)
+            break
+        i = i + 1
+        if i == 10:
+            break
+   # return render(request, 'main/task-graph.html', {'process': process.process})
+    return render(request, 'main/student_view_timeline.html', {'process': process, 'ordered_task': ordered_task})
 
 # to be changed
 @login_required(login_url='/login/')
 def student_view_timeline(request):
-    user = request.user
-    if user.student is None:
-        messages.error(request, 'You are not a student')
-        return redirect(request.META.get('HTTP_REFERER'))
-    return render(request, 'main/student_view.html', {'student': user.student})
+    process = get_object_or_404(ProcessInstance, id=process_id)
+    return render(request, 'main/student_view_timeline.html', {'process': process})
 
 
 @login_required(login_url='/login/')
@@ -149,4 +159,4 @@ def process_instance_view(request, p_id):
 @login_required(login_url='/login/')
 def account_view(request):
     form = UserForm(instance=request.user)
-    return render(request, 'main/account.html', {'form': form})
+    return render(request, 'main/ac`count.html', {'form': form})

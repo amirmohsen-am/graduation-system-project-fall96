@@ -1,4 +1,5 @@
 
+  {% extends 'main/base.html' %}
 
     {% block title %} Designer {% endblock %}
 
@@ -975,10 +976,10 @@
     },
       });
 
-    var a = new fsm('blue')
+
     d3.select("#graph").graphviz()
         .fade(false)
-        .renderDot(  visualize(a, { name: 'door', orientation: 'horizontal' }));
+        .renderDot(  visualize(fsm, { name: 'door', orientation: 'horizontal' }));
      {#visualize(fsm)#}
 
     /***/ })
