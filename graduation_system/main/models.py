@@ -28,8 +28,8 @@ class Task(models.Model):
     description = models.CharField(max_length=1000, blank=False)
     group = models.ForeignKey(Group, blank=True, null=True)
 
-    next_task_success = models.ForeignKey('self', blank=True, null=True, related_name='+')
-    next_task_fail = models.ForeignKey('self', blank=True, null=True, related_name='+')
+    next_task_accept = models.ForeignKey('self', blank=True, null=True, related_name='+')
+    next_task_reject = models.ForeignKey('self', blank=True, null=True, related_name='+')
 
     def __str__(self):
         return self.name
@@ -51,8 +51,8 @@ class TaskInstance(models.Model):
     TASK_STATUS = (
         ('student_pending', 'Student Pending'),
         ('staff_pending', 'Staff Pending'),
-        ('fail', 'Fail'),
-        ('success', 'Success'),
+        ('reject', 'Reject'),
+        ('accept', 'Accept'),
     )
 
     process_instance = models.ForeignKey(ProcessInstance, blank=False)

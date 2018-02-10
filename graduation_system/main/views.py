@@ -92,10 +92,15 @@ def process_add(request):
 def process_select(request, process_id):
     user = request.user
     if user.student is None:
+
         messages.error(request, 'You are not a student')
         return redirect(request.META.get('HTTP_REFERER'))
 
     process = get_object_or_404(Process, id=process_id)
+    instances = process.processinstance_set.filter(student=user.student)
+    if len(instances) >= 1:
+        messages.error(request, 'Student has selected this process before')
+        return redirect(request.META.get('HTTP_REFERER'))
     process_instance = ProcessInstance(student=user.student, process=process)
     process_instance.save()
     for task in process.task_set.all():
