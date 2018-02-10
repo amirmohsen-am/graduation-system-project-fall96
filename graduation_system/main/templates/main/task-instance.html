@@ -9,5 +9,26 @@
 {% endblock %}
 
 {% block content %}
-    {{ task_instance }}
+    {% load bootstrap4 %}
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+
+        </form>
+
+    {% for coments in task_instance.comment_set.all %}
+        {{ coments.text }}
+    {% endfor %}
+
+
+    <form action="" method="post" class="form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleTextarea">Example textarea</label>
+                <textarea name="comment-text" class="form-control" id="exampleTextarea" rows="3"></textarea>
+              </div>
+            {% buttons %}
+                <button type="submit" class="btn btn-secondary btn-lg btn-block">Post</button>
+            {% endbuttons %}
+    </form>
 {% endblock %}

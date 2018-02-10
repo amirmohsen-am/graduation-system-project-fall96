@@ -183,8 +183,8 @@ def task_instance_view(request, t_id):
         text = request.POST.get('comment-text')
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=task_instance)
-
-    return render(request, 'main/task-instance.html', {'task_instance': task_instance})
+    form = TaskForm(instance=task_instance.task)
+    return render(request, 'main/task-instance.html', {'task_instance': task_instance, 'form': form})
 
 
 @login_required(login_url='/login/')
