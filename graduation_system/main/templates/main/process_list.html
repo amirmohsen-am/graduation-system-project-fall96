@@ -1,7 +1,7 @@
 {% load bootstrap4 %}
 
 
-    {% if if not user.is_staff  %}
+    {% if not user.is_staff  %}
         {{ process.name }}
         {{ process.task_start.name }}
         {{ process.task_end.name }}
