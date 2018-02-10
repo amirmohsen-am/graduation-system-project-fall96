@@ -134,7 +134,7 @@ def task_graph(request, process_id):
     while 1:
         ordered_task.append(t)
         t = t.next_task_accept
-        if t.name == p.task_end.name:
+        if t.end_task == True:
             ordered_task.append(t)
             break
         i = i + 1
