@@ -58,4 +58,8 @@
     {% else %}
         <a type="submit" class="btn btn-primary" href="{% url 'task-add' process.id%}"> Add Task</a>
     {% endif %}
+
+
+    <div style="margin-left: 20%">{% include "main/task-graph.html" %}</div>
+
 {% endblock %}

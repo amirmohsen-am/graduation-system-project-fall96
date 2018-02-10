@@ -9,7 +9,30 @@
 {% endblock %}
 
 {% block content %}
-    {% for task_instance in task_instances %}
-        {{ task_instance.get_status_display }}
-    {% endfor %}
+    <h1>I don't know</h1>
+    <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Process Name</th>
+              <th scope="col">Task Name</th>
+              <th scope="col"> Status</th>
+                <th scope="col"> Student</th>
+            </tr>
+          </thead>
+          <tbody>
+                {% for task_instance in task_instances %}
+                    <tr>
+                      <th scope="row">1</th>
+                      <td> <a href="">{{ task_instance.process_instance.process.name }}</a></td>
+                      <td>{{ task_instance.task.name }}</td>
+                      <td>{{ task_instance.get_status_display }}</td>
+                      <td> <a href="">{{ task_instance.process_instance.student }}</a></td>
+                    </tr>
+                {% endfor %}
+          </tbody>
+        </table>
+{#    {% for task_instance in task_instances %}#}
+{#        {{ task_instance.get_status_display }}#}
+{#    {% endfor %}#}
 {% endblock %}
