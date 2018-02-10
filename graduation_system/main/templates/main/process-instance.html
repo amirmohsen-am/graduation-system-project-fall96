@@ -53,11 +53,7 @@
       </tbody>
     </table>
 
-    {% if not user.is_staff %}
 
-    {% else %}
-        <a type="submit" class="btn btn-primary" href="{% url 'task-add' process_instance.process.id%}"> Add Task</a>
-    {% endif %}
 
 
 {#          <div style="margin-left: 20%">{% include "main/task-graph.html" %}</div>#}
@@ -85,29 +81,44 @@
       </tbody>
     </table>
 
-    <div class="text-center">
+
 {#        <input type="hidden" id="page-no" value="1">#}
 {#        <button id="load-content-button" class="btn btn-primary">دریافت اطلاعات بیشتر</button>#}
 {#        #}
 
 
+        {% if not user.is_staff  %}
+            <div class="text-center">
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    {% buttons %}
+                        <input type="hidden" id="action" value="accept">
+                        <button type="button" class="btn btn-success">accept</button>
+                    {% endbuttons %}
+                </form>
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    {% buttons %}
+                        <input type="hidden" id="action" value="reject">
+                        <button type="button" class="btn btn-danger">Failed</button>
+                    {% endbuttons %}
+                </form>
+            </div>
 
-        <form action="" method="post" class="form">
-            {% csrf_token %}
-            {% buttons %}
-                <input type="hidden" id="action" value="accept">
-                <button type="button" class="btn btn-success">accept</button>
-            {% endbuttons %}
-        </form>
-        <form action="" method="post" class="form">
-            {% csrf_token %}
-            {% buttons %}
-                <input type="hidden" id="action" value="reject">
-                <button type="button" class="btn btn-danger">Failed</button>
-            {% endbuttons %}
-        </form>
+        {% else %}
+            <div class="text-center">
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    {% buttons %}
+                        <input type="hidden" id="action" value="accept">
+                        <button type="button" class="btn btn-success">Done</button>
+                    {% endbuttons %}
+                </form>
 
-    </div>
+            </div>
+        {% endif %}
+
+
 
 
 {% endblock %}
