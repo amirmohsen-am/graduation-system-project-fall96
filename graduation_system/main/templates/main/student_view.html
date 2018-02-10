@@ -31,5 +31,30 @@
             {% endfor %}
       </tbody>
     </table>
-    <a type="submit" class="btn btn-primary" href="{% url 'designer-view'%}"> Add Processes</a>
+{#    <a type="submit" class="btn btn-primary" href="{% url 'designer-view'%}"> Add Processes</a>#}
+
+    <h3>Here you can select:</h3>
+
+
+
+    <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Num of tasks</th>
+              <th scope="col"> </th>
+            </tr>
+          </thead>
+          <tbody>
+                {% for proc in processes %}
+                    <tr>
+                      <th scope="row">1</th>
+                      <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
+                      <td>{{ proc.task_set.all|length }}</td>
+                      <td><a href="{% url 'process-select' proc.id %}" type="button" class="btn btn-primary" > Select Process </a></td>
+                    </tr>
+                {% endfor %}
+          </tbody>
+    </table>
 {% endblock %}
