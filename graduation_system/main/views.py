@@ -137,9 +137,6 @@ def task_graph(request, process_id):
         if t.end_task == True:
             ordered_task.append(t)
             break
-        i = i + 1
-        if i == 10:
-            break
    # return render(request, 'main/task-graph.html', {'process': process.process})
     return render(request, 'main/student_view_timeline.html', {'process': process, 'ordered_task': ordered_task})
 
