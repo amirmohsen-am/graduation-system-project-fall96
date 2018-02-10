@@ -121,7 +121,7 @@ def student_view(request):
     if user.student is None:
         messages.error(request, 'You are not a student')
         return redirect(request.META.get('HTTP_REFERER'))
-    return render(request, 'main/student_view.html', {'student': user.student , 'processes' : processes})
+    return render(request, 'main/student_view.html', {'student': user.student, 'processes': processes})
 
 
 @login_required(login_url='/login/')
@@ -162,10 +162,28 @@ def process_instance_view(request, p_id):
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=current_task)
 
-
     process = process_instance.process
     form = ProcessForm(instance=process)
-    return render(request, 'main/process-instance.html', {'process_instance': process_instance , 'form' : form})
+    return render(request, 'main/process-instance.html', {'process_instance': process_instance, 'form': form})
+
+
+@login_required(login_url='/login/')
+def task_instance_view(request, t_id):
+    user = request.user
+    task_instance = get_object_or_404(TaskInstance, id=t_id)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if user.student is not None:
+            if action == 'staff_done':
+                task_instance.status = 'student_pending'
+        else:
+            if action == 'student_done':
+                task_instance.status = 'staff_pending'
+        text = request.POST.get('comment-text')
+        if text is not None:
+            Comment.objects.create(user=user, text=text, task_instance=task_instance)
+
+    return render(request, 'main/task-instance.html', {'task_instance': task_instance})
 
 
 @login_required(login_url='/login/')
