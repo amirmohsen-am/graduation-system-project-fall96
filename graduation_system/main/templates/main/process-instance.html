@@ -95,15 +95,15 @@
         <form action="" method="post" class="form">
             {% csrf_token %}
             {% buttons %}
-                <input type="hidden" id="action" value="accept">
-                <button type="button" class="btn btn-success">accept</button>
+                <input type="hidden" name="action" value="accept">
+                <button type="submit" class="btn btn-success">Accept</button>
             {% endbuttons %}
         </form>
         <form action="" method="post" class="form">
             {% csrf_token %}
             {% buttons %}
-                <input type="hidden" id="action" value="reject">
-                <button type="button" class="btn btn-danger">Failed</button>
+                <input type="hidden" name="action" value="reject">
+                <button type="submit" class="btn btn-danger">Reject</button>
             {% endbuttons %}
         </form>
 
