@@ -76,6 +76,13 @@ class TaskInstance(models.Model):
     def __str__(self):
         return self.name + "instance-" + self.id
 
+class Comment(models.Model):
+    user = models.ForeignKey(User, blank=False)
+    text = models.TextField()
+    task_instance = models.ForeignKey(TaskInstance, blank=False)
+
+    def __str__(self):
+        return self.text
 
 class ProcessForm(ModelForm):
     class Meta:
