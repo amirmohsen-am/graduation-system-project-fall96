@@ -84,7 +84,6 @@ def process_add(request):
     else:
         form = ProcessForm()
     form.fields['task_start'].widget = forms.HiddenInput()
-    form.fields['task_end'].widget = forms.HiddenInput()
     return render(request, 'main/process_add.html', {'form': form})
 
 
@@ -111,6 +110,7 @@ def process_select(request, process_id):
     for task in process.task_set.all():
         TaskInstance.objects.create(process_instance=process_instance, task=task)
     process_instance.current_task = TaskInstance.objects.get(task=process.task_start, process_instance=process_instance)
+    process_instance.save()
     messages.success(request, 'Process has been instantiated')
     return redirect(request.META.get('HTTP_REFERER'))
 
