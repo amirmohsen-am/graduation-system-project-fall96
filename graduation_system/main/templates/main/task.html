@@ -12,7 +12,7 @@
 
     {% load bootstrap4 %}
     {{ user.student }}
-    {% if user.student %}
+    {% if if not user.is_staff  %}
         <form action="" method="post" class="form">
             {% csrf_token %}
             {% bootstrap_form form %}
