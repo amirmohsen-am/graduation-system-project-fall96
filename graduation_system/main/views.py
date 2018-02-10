@@ -36,6 +36,7 @@ def process_view(request, process_id):
             return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = ProcessForm(instance=process)
+
     return render(request, 'main/process.html', {'process': process, 'form': form})
 
 
@@ -47,7 +48,7 @@ def task_view(request, task_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Task was successfully edited')
-            return redirect(reverse('task-view'))
+            return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = TaskForm(instance=task)
 
@@ -95,6 +96,10 @@ def process_select(request, process_id):
         return redirect(request.META.get('HTTP_REFERER'))
 
     process = get_object_or_404(Process, id=process_id)
+    instances = process.processinstance_set.filter(student=user.student)
+    if len(instances) >= 1:
+        messages.error(request, 'Student has selected this process before')
+        return redirect(request.META.get('HTTP_REFERER'))
     process_instance = ProcessInstance(student=user.student, process=process)
     process_instance.save()
     for task in process.task_set.all():
@@ -126,3 +131,22 @@ def student_view_timeline(request):
         messages.error(request, 'You are not a student')
         return redirect(request.META.get('HTTP_REFERER'))
     return render(request, 'main/student_view.html', {'student': user.student})
+
+
+@login_required(login_url='/login/')
+def staff_view(request):
+    user = request.user
+    # group_names = user.groups.values_list('name', flat=True)
+    group_names = user.groups.all()
+    task_instances = TaskInstance.objects.all().filter(task__group__in=group_names)
+    return render(request, 'main/staff-view.html', {'task_instances': task_instances})
+
+@login_required(login_url='/login/')
+def process_instance_view(request, p_id):
+    process_instance = get_object_or_404(ProcessInstance, id=p_id)
+    return render(request, 'main/process-instance.html', {'process_instance': process_instance})
+
+@login_required(login_url='/login/')
+def account_view(request):
+    form = UserForm(instance=request.user)
+    return render(request, 'main/account.html', {'form': form})

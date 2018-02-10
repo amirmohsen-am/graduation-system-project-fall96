@@ -3,7 +3,14 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 
+
+
+
+
+
+
 from . import views
+
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -18,4 +25,7 @@ urlpatterns = [
     url(r'^process_select/(?P<process_id>\d+)$', views.process_select, name='process-select'),
     url(r'^student_view/', views.student_view, name='student-view'),
     url(r'^task_graph/(?P<process_id>\d+)$', views.task_graph, name='task-graph'),
+    url(r'^staff$', views.staff_view, name='staff-view'),
+    url(r'^process_instance/(?P<p_id>\d+)$', views.process_instance_view, name='process-instance-view'),
+    url(r'^account/$', views.account_view, name='account-view'),
 ]

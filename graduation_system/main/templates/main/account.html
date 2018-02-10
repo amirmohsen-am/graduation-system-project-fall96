@@ -9,15 +9,13 @@
 {% endblock %}
 
 {% block content %}
-
     {% load bootstrap4 %}
 
     <form action="" method="post" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}
-        {% buttons %}
-            <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit</button>
-        {% endbuttons %}
+{#        {% buttons %}#}
+{#            <button type="submit" class="btn btn-secondary btn-lg btn-block" >Submit</button>#}
+{#        {% endbuttons %}#}
     </form>
-
 {% endblock %}
