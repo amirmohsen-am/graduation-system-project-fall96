@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^process_select/(?P<process_id>\d+)$', views.process_select, name='process-select'),
     url(r'^student_view/', views.student_view, name='student-view'),
     url(r'^task_graph/(?P<process_id>\d+)$', views.task_graph, name='task-graph'),
+    url(r'^staff$', views.staff_view, name='staff-view'),
 ]

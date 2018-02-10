@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+
     {% load bootstrap4 %}
     {{ user.student }}
     {% if user.student %}
@@ -20,7 +21,7 @@
         {{ task.next_task_fail.name }}
     {% else %}
 
-        <form action="/url/to/submit/" method="post" class="form">
+        <form action="" method="post" class="form">
             {% csrf_token %}
             {% bootstrap_form form %}
             {% buttons %}

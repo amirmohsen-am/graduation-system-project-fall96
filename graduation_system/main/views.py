@@ -48,7 +48,7 @@ def task_view(request, task_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Task was successfully edited')
-            return redirect(reverse('task-view'))
+            return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = TaskForm(instance=task)
 
@@ -118,3 +118,12 @@ def student_view(request):
 def task_graph(request, process_id):
     process = get_object_or_404(Process, id=process_id)
     return render(request, 'main/task-graph.html', {'process': process})
+
+
+@login_required(login_url='/login/')
+def staff_view(request):
+    user = request.user
+    # group_names = user.groups.values_list('name', flat=True)
+    group_names = user.groups.all()
+    task_instances = TaskInstance.objects.all().filter(task__group__in=group_names)
+    return render(request, 'main/staff-view.html', {'task_instances': task_instances})
