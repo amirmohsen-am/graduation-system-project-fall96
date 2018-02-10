@@ -10,7 +10,7 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm
+from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment
 from django.urls import reverse
 
 
@@ -145,18 +145,23 @@ def process_instance_view(request, p_id):
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
     current_task = process_instance.current_task
     if request.method == 'POST':
+        action = request.POST.get('action')
         if user.student is not None:
-            if request.POST['action'] == 'accept':
+            if action == 'accept':
                 messages.success(request, 'Task successfully accepted')
                 process_instance.accept()
-            if request.POST['action'] == 'reject':
+            if action == 'reject':
                 messages.success(request, 'Task successfully rejected')
                 process_instance.reject()
-            if request.POST['action'] == 'staff_done':
+            if action == 'staff_done':
                 current_task.status = 'student_pending'
         else:
-            if request.POST['action'] == 'student_done':
+            if action == 'student_done':
                 current_task.status = 'staff_pending'
+        text = request.POST.get('comment-text')
+        if text is not None:
+            Comment.objects.create(user=user, text=text, task_instance=current_task)
+
 
     process = process_instance.process
     form = ProcessForm(instance=process)
