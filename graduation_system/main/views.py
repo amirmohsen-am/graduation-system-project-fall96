@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserChangeForm
 
 from django.shortcuts import render, get_object_or_404
 
@@ -9,13 +10,13 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance
+from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm
 from django.urls import reverse
 
 
 @login_required(login_url='/login/')
 def index(request):
-    return render(request, 'main/base.html')
+    return render(request, 'main/index.html')
 
 
 @login_required(login_url='/login/')
@@ -100,7 +101,12 @@ def process_select(request, process_id):
     if len(instances) >= 1:
         messages.error(request, 'Student has selected this process before')
         return redirect(request.META.get('HTTP_REFERER'))
-    process_instance = ProcessInstance(student=user.student, process=process)
+
+    if process.task_start is None:
+        messages.error(request, 'Please specify starting task for this process')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    process_instance = ProcessInstance(student=user.student, process=process, current_task=process.task_start)
     process_instance.save()
     for task in process.task_set.all():
         TaskInstance.objects.create(process_instance=process_instance, task=task)
@@ -111,10 +117,11 @@ def process_select(request, process_id):
 @login_required(login_url='/login/')
 def student_view(request):
     user = request.user
+    processes = Process.objects.all()
     if user.student is None:
         messages.error(request, 'You are not a student')
         return redirect(request.META.get('HTTP_REFERER'))
-    return render(request, 'main/student_view.html', {'student': user.student})
+    return render(request, 'main/student_view.html', {'student': user.student , 'processes' : processes})
 
 
 @login_required(login_url='/login/')
@@ -154,9 +161,27 @@ def staff_view(request):
 @login_required(login_url='/login/')
 def process_instance_view(request, p_id):
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
-    return render(request, 'main/process-instance.html', {'process_instance': process_instance})
+    current_task = process_instance.current_task
+    if request.method == 'POST':
+        if user.student is not None:
+            if request.POST['action'] == 'accept':
+                messages.success(request, 'Task successfully accepted')
+                process_instance.accept()
+            if request.POST['action'] == 'reject':
+                messages.success(request, 'Task successfully rejected')
+                process_instance.reject()
+            if request.POST['action'] == 'staff_done':
+                current_task.status = 'student_pending'
+        else:
+            if request.POST['action'] == 'student_done':
+                current_task.status = 'staff_pending'
+
+    process = process_instance.process
+    form = ProcessForm(instance=process)
+    return render(request, 'main/process-instance.html', {'process_instance': process_instance , 'form' : form})
+
 
 @login_required(login_url='/login/')
 def account_view(request):
     form = UserForm(instance=request.user)
-    return render(request, 'main/ac`count.html', {'form': form})
+    return render(request, 'main/account.html', {'form': form})
