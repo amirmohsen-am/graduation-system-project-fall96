@@ -51,7 +51,7 @@ class TaskInstance(models.Model):
 class ProcessForm(ModelForm):
     class Meta:
         model = Process
-        fields = ['name']
+        fields = ['name', 'task_start', 'task_end']
 
 
 class TaskForm(ModelForm):
