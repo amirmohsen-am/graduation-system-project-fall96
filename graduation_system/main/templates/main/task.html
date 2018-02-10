@@ -12,14 +12,14 @@
 
     {% load bootstrap4 %}
     {{ user.student }}
-    {% if user.student %}
-
-        {{ task.name }}
-        {{ task.process }}
-        {{ task.description }}
-        {{ task.next_task_success.name }}
-        {{ task.next_task_fail.name }}
-        {{ task.group }}
+    {% if not user.is_staff  %}
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+{#            {% buttons %}#}
+{#                <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit</button>#}
+{#            {% endbuttons %}#}
+        </form>
 
     {% else %}
 
