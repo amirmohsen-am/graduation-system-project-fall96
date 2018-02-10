@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, get_object_or_404
@@ -81,6 +82,8 @@ def process_add(request):
             return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = ProcessForm()
+    form.fields['task_start'].widget = forms.HiddenInput()
+    form.fields['task_end'].widget = forms.HiddenInput()
     return render(request, 'main/process_add.html', {'form': form})
 
 
@@ -100,6 +103,7 @@ def process_select(request, process_id):
     messages.success(request, 'Process has been instantiated')
     return redirect(request.META.get('HTTP_REFERER'))
 
+
 @login_required(login_url='/login/')
 def student_view(request):
     user = request.user
@@ -107,3 +111,9 @@ def student_view(request):
         messages.error(request, 'You are not a student')
         return redirect(request.META.get('HTTP_REFERER'))
     return render(request, 'main/student_view.html', {'student': user.student})
+
+
+@login_required(login_url='/login/')
+def task_graph(request, process_id):
+    process = get_object_or_404(Process, id=process_id)
+    return render(request, 'main/task-graph.html', {'process': process})
