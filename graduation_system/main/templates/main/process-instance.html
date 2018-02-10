@@ -12,5 +12,40 @@
     {% with process=process_instance.process%}
             {% include "main/process_list.html" %}
     {% endwith %}
-    <h4> Current task : {{ process_instance.current_task }} </h4>
+
+
+    <h4> Current task : </h4>
+
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Nothing</th>
+        </tr>
+      </thead>
+      <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td> <a href="{% url 'task-view' process_instance.current_task.task.id %}">{{ process_instance.current_task.task.name }}</a></td>
+                  <td>{{ process_instance.current_task.task.description }}</td>
+                  <td>{{ process_instance.current_task.task.id }}</td>
+                </tr>
+      </tbody>
+    </table>
+
+    <div class="text-center">
+{#        <input type="hidden" id="page-no" value="1">#}
+{#        <button id="load-content-button" class="btn btn-primary">دریافت اطلاعات بیشتر</button>#}
+{#        #}
+
+        <input type="hidden" id="action" value="1">
+        <button type="button" class="btn btn-success">Success</button>
+        <input type="hidden" id="action" value="1">
+        <button type="button" class="btn btn-danger">Failed</button>
+    </div>
+
+
 {% endblock %}

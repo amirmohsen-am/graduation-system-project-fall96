@@ -58,7 +58,7 @@ class ProcessInstance(models.Model):
         self.current_task = self.next_reject()
 
     def __str__(self):
-        return self.name + "-instance-" + self.id
+        return self.process.name + "-instance-" + str(self.id)
 
 
 class TaskInstance(models.Model):
@@ -74,7 +74,7 @@ class TaskInstance(models.Model):
     status = models.CharField(max_length=20, choices=TASK_STATUS, default='student_pending')
 
     def __str__(self):
-        return self.name + "instance-" + self.id
+        return self.task.name + "instance-" + str(self.id)
 
 
 class ProcessForm(ModelForm):
