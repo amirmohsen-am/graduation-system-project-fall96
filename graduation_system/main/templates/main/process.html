@@ -13,13 +13,21 @@
 {#    <p class="lead">Here you can see the details.</p>#}
     {% load bootstrap4 %}
 
-    <form action="" method="post" class="form">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <a type="submit" class="btn btn-secondary btn-lg btn-block" >Submit</a>
-        {% endbuttons %}
-    </form>
+
+    {% if user.student is None %}
+        {{ process.name }}
+        {{ process.task_start.name }}
+        {{ process.task_end.name }}
+    {% else %}
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <a type="submit" class="btn btn-secondary btn-lg btn-block" >Submit</a>
+            {% endbuttons %}
+        </form>
+    {% endif %}
+
 
 {#    <button type="button" class="btn btn-secondary btn-lg btn-block" >Submit</button>#}
 
@@ -44,5 +52,10 @@
             {% endfor %}
       </tbody>
     </table>
-    <a type="submit" class="btn btn-primary" href="{% url 'task-add' process.id%}"> Add Task</a>
+
+    {% if user.student is None %}
+
+    {% else %}
+        <a type="submit" class="btn btn-primary" href="{% url 'task-add' process.id%}"> Add Task</a>
+    {% endif %}
 {% endblock %}
