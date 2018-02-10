@@ -106,10 +106,11 @@ def process_select(request, process_id):
         messages.error(request, 'Please specify starting task for this process')
         return redirect(request.META.get('HTTP_REFERER'))
 
-    process_instance = ProcessInstance(student=user.student, process=process, current_task=process.task_start)
+    process_instance = ProcessInstance(student=user.student, process=process)
     process_instance.save()
     for task in process.task_set.all():
         TaskInstance.objects.create(process_instance=process_instance, task=task)
+    process_instance.current_task = TaskInstance.objects.get(task=process.task_start, process_instance=process_instance)
     messages.success(request, 'Process has been instantiated')
     return redirect(request.META.get('HTTP_REFERER'))
 
