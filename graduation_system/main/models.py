@@ -45,8 +45,6 @@ class ProcessInstance(models.Model):
         return self.name + "-instance-" + self.id
 
 
-
-
 class TaskInstance(models.Model):
     TASK_STATUS = (
         ('student_pending', 'Student Pending'),
@@ -73,3 +71,8 @@ class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = '__all__'
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'first_name', 'last_name', 'last_login']

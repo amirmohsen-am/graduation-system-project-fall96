@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserChangeForm
 
 from django.shortcuts import render, get_object_or_404
 
@@ -9,7 +10,7 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance
+from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm
 from django.urls import reverse
 
 
@@ -92,7 +93,6 @@ def process_add(request):
 def process_select(request, process_id):
     user = request.user
     if user.student is None:
-
         messages.error(request, 'You are not a student')
         return redirect(request.META.get('HTTP_REFERER'))
 
@@ -131,3 +131,13 @@ def staff_view(request):
     group_names = user.groups.all()
     task_instances = TaskInstance.objects.all().filter(task__group__in=group_names)
     return render(request, 'main/staff-view.html', {'task_instances': task_instances})
+
+@login_required(login_url='/login/')
+def process_instance_view(request, p_id):
+    process_instance = get_object_or_404(ProcessInstance, id=p_id)
+    return render(request, 'main/process-instance.html', {'process_instance': process_instance})
+
+@login_required(login_url='/login/')
+def account_view(request):
+    form = UserForm(instance=request.user)
+    return render(request, 'main/account.html', {'form': form})
