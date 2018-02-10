@@ -1,10 +1,11 @@
-{% load bootstrap4 %}
+    {% load bootstrap4 %}
 
 
     {% if not user.is_staff  %}
-        {{ process.name }}
-        {{ process.task_start.name }}
-        {{ process.task_end.name }}
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+        </form>
     {% else %}
         <form action="" method="post" class="form">
             {% csrf_token %}

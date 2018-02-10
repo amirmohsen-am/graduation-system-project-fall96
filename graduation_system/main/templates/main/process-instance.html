@@ -9,9 +9,54 @@
 {% endblock %}
 
 {% block content %}
-    {% with process=process_instance.process%}
-            {% include "main/process_list.html" %}
-    {% endwith %}
+
+
+    {% load bootstrap4 %}
+
+
+    {% if not user.is_staff  %}
+        {{ process_instance.process.name }}
+        {{ process_instance.process.task_start.name }}
+        {{ process_instance.process.task_end.name }}
+    {% else %}
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <a type="submit" class="btn btn-secondary btn-lg btn-block" >Submit</a>
+            {% endbuttons %}
+        </form>
+    {% endif %}
+
+
+{#    <button type="button" class="btn btn-secondary btn-lg btn-block" >Submit</button>#}
+
+    <div style="height: 30px"></div>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Nothing</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for task in process_instance.process.task_set.all %}
+                <tr>
+                  <th scope="row">1</th>
+                  <td> <a href="{% url 'task-instance-view' task.id %}">{{ task.name }}</a></td>
+                  <td>{{ task.description }}</td>
+                  <td>@mdo</td>
+                </tr>
+            {% endfor %}
+      </tbody>
+    </table>
+
+
+
+
+{#          <div style="margin-left: 20%">{% include "main/task-graph.html" %}</div>#}
 
 
     <h4> Current task : </h4>
@@ -36,16 +81,44 @@
       </tbody>
     </table>
 
-    <div class="text-center">
+
 {#        <input type="hidden" id="page-no" value="1">#}
 {#        <button id="load-content-button" class="btn btn-primary">دریافت اطلاعات بیشتر</button>#}
 {#        #}
 
-        <input type="hidden" id="action" value="1">
-        <button type="button" class="btn btn-success">Success</button>
-        <input type="hidden" id="action" value="1">
-        <button type="button" class="btn btn-danger">Failed</button>
-    </div>
+
+        {% if not user.is_staff  %}
+            <div class="text-center">
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    {% buttons %}
+                        <input type="hidden" id="action" value="accept">
+                        <button type="button" class="btn btn-success">accept</button>
+                    {% endbuttons %}
+                </form>
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    {% buttons %}
+                        <input type="hidden" id="action" value="reject">
+                        <button type="button" class="btn btn-danger">Failed</button>
+                    {% endbuttons %}
+                </form>
+            </div>
+
+        {% else %}
+            <div class="text-center">
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    {% buttons %}
+                        <input type="hidden" id="action" value="accept">
+                        <button type="button" class="btn btn-success">Done</button>
+                    {% endbuttons %}
+                </form>
+
+            </div>
+        {% endif %}
+
+
 
 
 {% endblock %}
