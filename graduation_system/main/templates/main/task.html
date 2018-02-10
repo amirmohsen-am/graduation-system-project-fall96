@@ -11,15 +11,15 @@
 {% block content %}
     {% load bootstrap4 %}
     {{ user.student }}
-    {% if user.student == None%}
-        kir
+    {% if user.student %}
+
         {{ task.name }}
         {{ task.process }}
         {{ task.description }}
         {{ task.next_task_success.name }}
         {{ task.next_task_fail.name }}
     {% else %}
-        kir2
+
         <form action="/url/to/submit/" method="post" class="form">
             {% csrf_token %}
             {% bootstrap_form form %}
