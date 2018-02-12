@@ -44,7 +44,7 @@
       <tbody>
             {% for task in process_instance.process.task_set.all %}
                 <tr>
-                  <th scope="row">1</th>
+                  <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-instance-view' task.id %}">{{ task.name }}</a></td>
                   <td>{{ task.description }}</td>
                   <td>@mdo</td>
@@ -73,7 +73,7 @@
       </thead>
       <tbody>
                 <tr>
-                  <th scope="row">1</th>
+                  <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-view' process_instance.current_task.task.id %}">{{ process_instance.current_task.task.name }}</a></td>
                   <td>{{ process_instance.current_task.task.description }}</td>
                   <td>{{ process_instance.current_task.task.id }}</td>

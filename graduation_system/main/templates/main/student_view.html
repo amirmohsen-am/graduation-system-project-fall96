@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Welocome to CHUCHUL</h1>
+    <h1 style="text-align: center">Welcome to CHUCHUL</h1>
 
-    <h5>Dear {{ student.user }} here is your processes:</h5>
+    <h5 style="text-align: center " >Dear <span style="color: #ff0000">{{ student.user }}  </span> here is your processes:</h5>
     <table class="table table-hover">
       <thead class="thead-dark">
         <tr>
@@ -22,9 +22,10 @@
         </tr>
       </thead>
       <tbody>
+
             {% for proc_instance in student.processinstance_set.all  %}
                 <tr>
-                  <th scope="row">1</th>
+                  <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'process-instance-view' proc_instance.id %}">{{ proc_instance.process.name }}</a></td>
                   <td>{{ proc_instance.process.task_set.all|length }}</td>
                   <td></td>
@@ -50,7 +51,7 @@
           <tbody>
                 {% for proc in processes %}
                     <tr>
-                      <th scope="row">1</th>
+                      <th scope="row">{{ forloop.counter }}</th>
                       <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
                       <td>{{ proc.task_set.all|length }}</td>
                       <td><a href="{% url 'process-select' proc.id %}" type="button" class="btn btn-primary" > Select Process </a></td>

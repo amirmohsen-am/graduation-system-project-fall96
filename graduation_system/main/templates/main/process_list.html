@@ -5,6 +5,7 @@
         <form action="" method="post" class="form">
             {% csrf_token %}
             {% bootstrap_form form %}
+
         </form>
     {% else %}
         <form action="" method="post" class="form">
@@ -32,7 +33,7 @@
       <tbody>
             {% for task in process.task_set.all %}
                 <tr>
-                  <th scope="row">1</th>
+                  <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-view' task.id %}">{{ task.name }}</a></td>
                   <td>{{ task.description }}</td>
                   <td>@mdo</td>
