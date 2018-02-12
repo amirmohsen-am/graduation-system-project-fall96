@@ -1,3 +1,5 @@
+{% load staticfiles %}
+{% load static %}
 
 <!doctype html>
 <html lang="en">
@@ -38,7 +40,7 @@
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-        <a class="navbar-brand" href="#">Samane Amoozesh</a>
+        <a class="navbar-brand" href="#">Graduation System</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -58,18 +60,21 @@
 {#                    <a class="nav-link disabled" href="#">Disabled</a>#}
 {#                </li>#}
             </ul>
+            <img style="height: 50px; padding-right: 30%" src={% static "pics/sharif_logo.png" %} alt="Flowers in Chania">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-left: 200px">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-left: 200px; color:#b9bbbe;">
                         <span class="glyphicon glyphicon-user"></span> 
-                        <strong>{{ user.get_username }}</strong>
+                        <strong style="color:#b9bbbe;">{{ user.get_username }}</strong>
                         <span class="glyphicon glyphicon-chevron-down"></span>
                     </a>
-                    <ul class="dropdown-menu" style="padding-right:500px , ">
+                    <ul class="dropdown-menu" style="padding-right:500px  ">
                         <li>
                             <div class="navbar-login">
                                 <div class="row">
+
                                     <div class="col-lg-4">
+                                        <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
                                         <p class="text-center">
                                             <span class="glyphicon glyphicon-user icon-size"></span>
                                         </p>
@@ -97,6 +102,7 @@
                             </div>
                         </li>
                     </ul>
+
                 </li>
             </ul>
             <a class="navbar-brand" style="width: 5%"></a>
