@@ -125,11 +125,6 @@ def student_view(request):
     return render(request, 'main/student_view.html', {'student': user.student, 'processes': processes})
 
 
-@login_required(login_url='/login/')
-def task_graph(request, process_id):
-    process = get_object_or_404(Process, id=process_id)
-    return render(request, 'main/task-graph.html', {'process': process})
-
 
 @login_required(login_url='/login/')
 def staff_view(request):
@@ -142,6 +137,7 @@ def staff_view(request):
 
 @login_required(login_url='/login/')
 def process_instance_view(request, p_id):
+    user = request.user
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
     current_task = process_instance.current_task
     if request.method == 'POST':
