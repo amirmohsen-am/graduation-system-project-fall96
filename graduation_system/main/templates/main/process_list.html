@@ -27,7 +27,6 @@
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
-          <th scope="col">Nothing</th>
         </tr>
       </thead>
       <tbody>
@@ -36,7 +35,6 @@
                   <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-view' task.id %}">{{ task.name }}</a></td>
                   <td>{{ task.description }}</td>
-                  <td>@mdo</td>
                 </tr>
             {% endfor %}
       </tbody>
