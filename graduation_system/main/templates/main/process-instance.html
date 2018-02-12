@@ -19,7 +19,7 @@
         {{ process_instance.process.task_start.name }}
         {{ process_instance.process.task_end.name }}
     {% else %}
-        <form action="" method="post" class="form">
+        <form action="" method="post" class="h5 text-center mb-4">
             {% csrf_token %}
             {% bootstrap_form form %}
             {% buttons %}

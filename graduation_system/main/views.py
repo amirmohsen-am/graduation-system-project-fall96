@@ -158,6 +158,7 @@ def process_instance_view(request, p_id):
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=current_task)
 
+
     ordered_task = []
     after_current = []
     p = process_instance.process
