@@ -142,7 +142,6 @@ def staff_view(request):
 
 @login_required(login_url='/login/')
 def process_instance_view(request, p_id):
-    user = request.user
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
     current_task = process_instance.current_task
     if request.method == 'POST':
@@ -163,10 +162,31 @@ def process_instance_view(request, p_id):
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=current_task)
 
+    ordered_task = []
+    after_current = []
+    p = process_instance.process
+    t = p.task_start
+    b = 2
+    while 1:
+        if t == process_instance.current_task.task:
+            b = 1
+        if b == 2:
+            ordered_task.append(t)
+        if b == 0:
+            after_current.append(t)
+        if b == 1:
+            b = 0
+        t = t.next_task_accept
+        if t.end_task == True:
+            if b == 2:
+                ordered_task.append(t)
+            if b == 0:
+                after_current.append(t)
+            break
+
     process = process_instance.process
     form = ProcessForm(instance=process)
-    return render(request, 'main/process-instance.html', {'process_instance': process_instance, 'form': form})
-
+    return render(request, 'main/process-instance.html', {'process_instance': process_instance, 'form': form, 'ordered_task': ordered_task, 'cur': process_instance.current_task.task, 'after': after_current})
 
 @login_required(login_url='/login/')
 def task_instance_view(request, t_id):
