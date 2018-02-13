@@ -23,17 +23,16 @@
         {% bootstrap_form form layout='horizontal' %}
     </form>
 
-
-
 {#    <button type="button" class="btn btn-secondary btn-lg btn-block" >Save</button>#}
 
     <div style="height: 30px"></div>
-    <table class="table table-hover">
+    <table class="table table-hover" style="border: 2px solid black; ">
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
+          <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
@@ -41,7 +40,8 @@
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-instance-view' task_instance.id %}">{{ task_instance.task.name }}</a></td>
-                  <td>{{ task.description }}</td>
+                  <td>{{ task_instance.task.description }}</td>
+                   <td>{{ task_instance.status }}</td>
                 </tr>
             {% endfor %}
       </tbody>
@@ -56,7 +56,7 @@
     <h4> Current task : </h4>
 
 
-    <table class="table table-hover">
+    <table class="table table-hover" style="border: 2px solid black; ">
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
@@ -83,14 +83,14 @@
 
         {% if user.is_staff  %}
             <div class="text-center">
-                <form action="" method="post" class="form">
+                <form action="" method="post" class="form" >
                     {% csrf_token %}
                     {% buttons %}
                         <input type="hidden" name="action" value="accept">
                         <button type="submit" class="btn btn-success">Accept</button>
                     {% endbuttons %}
                 </form>
-                <form action="" method="post" class="form">
+                <form action="" method="post" class="form" >
                     {% csrf_token %}
                     {% buttons %}
                         <input type="hidden" name="action" value="reject">
@@ -127,51 +127,54 @@
 					<ul class="timeline timeline-horizontal">
 						{% for task in ordered_task %}
                             <li class="timeline-item">
-                                <a href=  "{% url 'task-view' task.id %}">,
+                                <a href=  "{% url 'task-instance-view' task.id %}">,
 							<div class="timeline-badge success">
                                 <i class="fa fa-check"></i></div>
                                 </a>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
-									<h4 class="timeline-title">{{ task.name }}</h4>
+									<h4 class="timeline-title">{{ task.task.name }}</h4>
 									<p><small class="text-muted"><i class="fa fa-time"></i> Description: </small></p>
 								</div>
 								<div class="timeline-body">
-									<p>{{ task.description }}</p>
+									<p>{{ task.task.description }}</p>
 								</div>
 							</div>
 						    </li>
 
                          {% endfor %}
+                            {% if cur  %}
                             <li class="timeline-item">
-                                <a href=  "{% url 'task-view' process_instance.current_task.task.id %}">,
+                                <a href=  "{% url 'task-instance-view' process_instance.current_task.id %}">,
 							<div class="timeline-badge warning">
                                 <i class="fa fa-search"></i></div>
-                                  </a>
+                                </a>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
-									<h4 class="timeline-title">{{ cur.name }}</h4>
+									<h4 class="timeline-title">{{ cur.task.name }}</h4>
 									<p><small class="text-muted"><i class="fa fa-time"></i> Description: </small></p>
 								</div>
 								<div class="timeline-body">
-									<p>{{ cur.description }}</p>
+									<p>{{ cur.task.description }}</p>
 								</div>
 							</div>
 						    </li>
+                            {% endif %}
+
 
                         {% for task in after %}
                             <li class="timeline-item">
-                                <a href=  "{% url 'task-view' task.id %}">,
+                                <a href=  "{% url 'task-instance-view' task.id %}">,
 							<div class="timeline-badge danger">
                                 <i class="fa fa-remove"></i></div>
                                 </a>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
-									<h4 class="timeline-title">{{ task.name }}</h4>
+									<h4 class="timeline-title">{{ task.task.name }}</h4>
 									<p><small class="text-muted"><i class="fa fa-time"></i> Description: </small></p>
 								</div>
 								<div class="timeline-body">
-									<p>{{ task.description }}</p>
+									<p>{{ task.task.description }}</p>
 								</div>
 							</div>
 						    </li>
