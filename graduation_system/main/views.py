@@ -275,3 +275,8 @@ def contact_view(request):
 def bank_view(request, t_id):
     processes = Process.objects.all()
     return render(request, 'main/bank.html', {'processes': processes})
+
+@login_required
+def task_graph(request, process_id):
+    process = get_object_or_404(Process, id=process_id)
+    return render(request, 'main/task_graph.html', {'process': process})

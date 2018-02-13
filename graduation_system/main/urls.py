@@ -20,7 +20,6 @@ urlpatterns = [
     url(r'^process_add/', views.process_add, name='process-add'),
     url(r'^process_select/(?P<process_id>\d+)$', views.process_select, name='process-select'),
     url(r'^student_view/', views.student_view, name='student-view'),
-    # url(r'^task_graph/(?P<process_id>\d+)$', views.task_graph, name='task-graph'),
     url(r'^staff$', views.staff_view, name='staff-view'),
     url(r'^process_instance/(?P<p_id>\d+)$', views.process_instance_view, name='process-instance-view'),
     url(r'^task_instance/(?P<t_id>\d+)$', views.task_instance_view, name='task-instance-view'),
@@ -30,4 +29,6 @@ urlpatterns = [
     url(r'^process_instance_delete/(?P<p_id>\d+)', views.process_instance_delete, name='process-instance-delete'),
     url(r'^task_delete/(?P<task_id>\d+)', views.task_delete, name='task-delete'),
     url(r'^bank/(?P<t_id>\d+)$', views.bank_view, name='bank-view'),
+    url(r'^task_graph/(?P<process_id>\d+)$', views.task_graph, name='task-graph'),
+
 ]
