@@ -9,6 +9,8 @@
 {% endblock %}
 
 {% block content %}
+    {% load staticfiles %}
+    {% load static %}
     <h1 class="mt-5">Process list</h1>
     <p class="lead">Here you can see the Process list.</p>
 
@@ -19,7 +21,7 @@
               <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">Number of Tasks</th>
-              <th scope="col"> </th>
+
             </tr>
           </thead>
           <tbody>
@@ -28,8 +30,7 @@
                       <th scope="row">{{ forloop.counter }}</th>
                       <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
                       <td>{{ proc.task_set.all|length }}</td>
-                      <td><a href="{% url 'process-select' proc.id %}" type="button" class="btn btn-primary" > Select Process </a></td>
-                    </tr>
+                  </tr>
                 {% endfor %}
           </tbody>
         </table>
@@ -43,7 +44,7 @@
               <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">Number of Tasks</th>
-              <th scope="col"> </th>
+              <th scope="col"> Delete </th>
             </tr>
           </thead>
           <tbody>
@@ -52,6 +53,7 @@
                           <th scope="row">{{ forloop.counter }}</th>
                           <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
                           <td>{{ proc.task_set.all|length }}</td>
+                          <td> <a href="{% url 'delete-view' proc.id %}" >  <img style="height: 20px" src={% static "pics/Delete_icon.png" %}  alt="Delete"> </a></td>
                       </tr>
                 {% endfor %}
           </tbody>

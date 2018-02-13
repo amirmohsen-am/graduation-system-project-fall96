@@ -5,10 +5,6 @@ from django.contrib.auth import views as auth_views
 
 
 
-
-
-
-
 from . import views
 
 
@@ -33,4 +29,5 @@ urlpatterns = [
     url(r'^process_delete/(?P<process_id>\d+)', views.process_delete, name='process-delete'),
     url(r'^process_instance_delete/(?P<p_id>\d+)', views.process_instance_delete, name='process-instance-delete'),
     url(r'^task_delete/(?P<task_id>\d+)', views.task_delete, name='task-delete'),
+    url(r'^bank/(?P<t_id>\d+)$', views.bank_view, name='bank-view'),
 ]
