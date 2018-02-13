@@ -212,10 +212,6 @@ def process_instance_view(request, p_id):
         if t is None:
             break
         if t.task.end_task == True:
-            if b == 2:
-                ordered_task.append(t)
-            if b == 0:
-                after_current.append(t)
             break
         if b == 1:
             b = 0
