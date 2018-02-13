@@ -111,9 +111,9 @@ class TaskForm(ModelForm):
     def __init__(self, *args, **kwargs):
         if 'process_custom' in kwargs:
             process = kwargs.pop('process_custom')
-        else:
-            process = self.instance.process
         super(TaskForm, self).__init__(*args, **kwargs)
+        if hasattr(self.instance, 'process'):
+            process = self.instance.process
 
         self.fields['next_task_accept'].queryset = Task.objects.filter(process=process)
         self.fields['next_task_reject'].queryset = Task.objects.filter(process=process)
