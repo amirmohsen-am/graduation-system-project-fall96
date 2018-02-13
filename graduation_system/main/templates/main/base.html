@@ -4,8 +4,16 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <style>
+        p_for_comment {
+            border-left: 6px solid red;
+            background-color: lightgrey;
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{% static 'main/timeline.css' %}">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/comments.css' %}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -67,7 +75,7 @@
 {#                    <a class="nav-link disabled" href="#">Disabled</a>#}
 {#                </li>#}
             </ul>
-            <img style="height: 50px; padding-left: 15%" src={% static "pics/sharif_logo.png" %} alt="Flowers in Chania">
+            <img style="height: 50px; margin-right: 28%" src={% static "pics/sharif_logo.png" %} alt="Flowers in Chania">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-left: 200px; color:#b9bbbe; ">
@@ -120,6 +128,7 @@
 
 <!-- Begin page content -->
 <main role="main" class="container">
+    <div style="height:20px"></div>
 {#    <h1 class="mt-5">Sticky footer with fixed navbar</h1>#}
 {#    <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>#}
 {#    <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>#}

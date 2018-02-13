@@ -31,4 +31,6 @@ urlpatterns = [
     url(r'^task_instance/(?P<t_id>\d+)$', views.task_instance_view, name='task-instance-view'),
     url(r'^account/$', views.account_view, name='account-view'),
     url(r'^contact/$', views.contact_view, name='contact-view'),
+    url(r'^bank/(?P<t_id>\d+)$', views.bank_view, name='bank-view'),
+    url(r'^delete/(?P<process_id>\d+)$', views.process_delete, name='delete-view'),
 ]

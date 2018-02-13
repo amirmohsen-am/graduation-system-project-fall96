@@ -245,3 +245,8 @@ def account_view(request):
 def contact_view(request):
     processes = Process.objects.all()
     return render(request, 'main/contact.html', {'processes': processes})
+
+@login_required
+def bank_view(request, t_id):
+    processes = Process.objects.all()
+    return render(request, 'main/bank.html', {'processes': processes})
