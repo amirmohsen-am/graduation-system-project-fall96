@@ -16,6 +16,7 @@ class Student(models.Model):
 class Process(models.Model):
     name = models.CharField(max_length=100, blank=False)
     task_start = models.ForeignKey('Task', blank=True, null=True, related_name='+')
+
     # task_end = models.ForeignKey('Task', blank=True, null=True, related_name='+')
 
     def __str__(self):
@@ -76,13 +77,16 @@ class TaskInstance(models.Model):
     def __str__(self):
         return self.task.name + "instance-" + str(self.id)
 
+
 class Comment(models.Model):
     user = models.ForeignKey(User, blank=False)
     text = models.TextField()
     task_instance = models.ForeignKey(TaskInstance, blank=False)
+    time = models.DateTimeField('date commented', auto_now_add=True)
 
     def __str__(self):
         return self.text
+
 
 class ProcessForm(ModelForm):
     class Meta:

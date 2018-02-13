@@ -125,7 +125,6 @@ def student_view(request):
     return render(request, 'main/student_view.html', {'student': user.student, 'processes': processes})
 
 
-
 @login_required(login_url='/login/')
 def staff_view(request):
     user = request.user
@@ -158,7 +157,6 @@ def process_instance_view(request, p_id):
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=current_task)
 
-
     ordered_task = []
     after_current = []
     p = process_instance.process
@@ -183,7 +181,10 @@ def process_instance_view(request, p_id):
 
     process = process_instance.process
     form = ProcessForm(instance=process)
-    return render(request, 'main/process-instance.html', {'process_instance': process_instance, 'form': form, 'ordered_task': ordered_task, 'cur': process_instance.current_task.task, 'after': after_current})
+    return render(request, 'main/process-instance.html',
+                  {'process_instance': process_instance, 'form': form, 'ordered_task': ordered_task,
+                   'cur': process_instance.current_task.task, 'after': after_current})
+
 
 @login_required(login_url='/login/')
 def task_instance_view(request, t_id):
@@ -208,6 +209,7 @@ def task_instance_view(request, t_id):
 def account_view(request):
     form = UserForm(instance=request.user)
     return render(request, 'main/account.html', {'form': form})
+
 
 @login_required(login_url='/login/')
 def contact_view(request):
