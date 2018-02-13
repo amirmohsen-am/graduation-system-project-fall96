@@ -77,7 +77,7 @@ def task_add(request, process_id):
         form = TaskForm(process_custom=process)
     form.fields["process"].initial = process
     form.fields['process'].widget.attrs['readonly'] = True
-    form.fields['process'].widget.attrs['disabled'] = True
+    # form.fields['process'].widget.attrs['disabled'] = True
     return render(request, 'main/task_add.html', {'form': form})
 
 @login_required
