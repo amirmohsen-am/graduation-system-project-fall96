@@ -79,6 +79,8 @@
 
 
         {% if user.is_staff  %}
+            {% if not process_instance.process_complete  %}
+                aaaaaa
             <div class="text-center">
                 <form action="" method="post" class="form" >
                     {% csrf_token %}
@@ -95,8 +97,11 @@
                     {% endbuttons %}
                 </form>
             </div>
+            {% endif %}
         {% endif %}
         {% if user.student %}
+            {% if not process_instance.process_complete  %}
+                aaaa
             <div class="text-center">
                 <form action="" method="post" class="form">
                     {% csrf_token %}
@@ -107,6 +112,7 @@
                 </form>
 
             </div>
+            {% endif %}
         {% endif %}
 
 
