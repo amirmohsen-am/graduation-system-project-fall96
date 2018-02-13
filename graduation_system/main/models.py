@@ -49,20 +49,12 @@ class ProcessInstance(models.Model):
     def process_complete(self):
         return self.current_task.task.end_task
 
-    def next_accept(self):
-        next_task = self.current_task.task.next_task_accept
-        return TaskInstance.objects.get(task=next_task, process_instance=self)
-
-    def next_reject(self):
-        next_task = self.current_task.task.next_task_reject
-        return TaskInstance.objects.get(task=next_task, process_instance=self)
-
     def accept(self):
-        self.current_task = self.next_accept()
+        self.current_task = self.current_task.next_accept()
         self.save()
 
     def reject(self):
-        self.current_task = self.next_reject()
+        self.current_task = self.current_task.next_reject()
         self.save()
 
     def __str__(self):
@@ -80,6 +72,15 @@ class TaskInstance(models.Model):
     process_instance = models.ForeignKey(ProcessInstance, blank=False)
     task = models.ForeignKey(Task, blank=False)
     status = models.CharField(max_length=20, choices=TASK_STATUS, default='student_pending')
+
+    def next_accept(self):
+        next_task = self.task.next_task_accept
+        return TaskInstance.objects.get(task=next_task, process_instance=self.process_instance)
+
+    def next_reject(self):
+        next_task = self.task.next_task_reject
+        return TaskInstance.objects.get(task=next_task, process_instance=self.process_instance)
+
 
     def __str__(self):
         return self.task.name + "instance-" + str(self.id)

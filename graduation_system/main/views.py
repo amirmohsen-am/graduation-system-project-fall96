@@ -202,9 +202,6 @@ def process_instance_view(request, p_id):
             ordered_task.append(t)
         if b == 0:
             after_current.append(t)
-        if b == 1:
-            b = 0
-        t = t.next_task_accept
         if t is None:
             break
         if t.end_task == True:
@@ -213,6 +210,9 @@ def process_instance_view(request, p_id):
             if b == 0:
                 after_current.append(t)
             break
+        if b == 1:
+            b = 0
+        t = t.next_task_accept
 
     process = process_instance.process
     form = ProcessForm(instance=process)
