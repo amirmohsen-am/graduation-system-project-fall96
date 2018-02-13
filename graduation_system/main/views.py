@@ -14,18 +14,18 @@ from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, T
 from django.urls import reverse
 
 
-@login_required(login_url='/login/')
+@login_required
 def index(request):
     return render(request, 'main/index.html')
 
 
-@login_required(login_url='/login/')
+@login_required
 def designer_view(request):
     processes = Process.objects.all()
     return render(request, 'main/designer.html', {'processes': processes})
 
 
-@login_required(login_url='/login/')
+@login_required
 def process_view(request, process_id):
     process = get_object_or_404(Process, id=process_id)
     if request.method == 'POST':
@@ -41,7 +41,7 @@ def process_view(request, process_id):
     return render(request, 'main/process.html', {'process': process, 'form': form})
 
 
-@login_required(login_url='/login/')
+@login_required
 def task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -56,7 +56,7 @@ def task_view(request, task_id):
     return render(request, 'main/task.html', {'task': task, 'form': form})
 
 
-@login_required(login_url='/login/')
+@login_required
 def task_add(request, process_id):
     process = get_object_or_404(Process, id=process_id)
     if request.method == 'POST':
@@ -73,7 +73,7 @@ def task_add(request, process_id):
     return render(request, 'main/task_add.html', {'form': form})
 
 
-@login_required(login_url='/login/')
+@login_required
 def process_add(request):
     if request.method == 'POST':
         form = ProcessForm(request.POST)
@@ -88,7 +88,7 @@ def process_add(request):
 
 
 # new instance of process
-@login_required(login_url='/login/')
+@login_required
 def process_select(request, process_id):
     user = request.user
     if user.student is None:
@@ -115,7 +115,7 @@ def process_select(request, process_id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-@login_required(login_url='/login/')
+@login_required
 def student_view(request):
     user = request.user
     processes = Process.objects.all()
@@ -125,8 +125,7 @@ def student_view(request):
     return render(request, 'main/student_view.html', {'student': user.student, 'processes': processes})
 
 
-
-@login_required(login_url='/login/')
+@login_required
 def staff_view(request):
     user = request.user
     # group_names = user.groups.values_list('name', flat=True)
@@ -135,7 +134,7 @@ def staff_view(request):
     return render(request, 'main/staff-view.html', {'task_instances': task_instances})
 
 
-@login_required(login_url='/login/')
+@login_required
 def process_instance_view(request, p_id):
     user = request.user
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
@@ -157,7 +156,6 @@ def process_instance_view(request, p_id):
         text = request.POST.get('comment-text')
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=current_task)
-
 
     ordered_task = []
     after_current = []
@@ -183,9 +181,16 @@ def process_instance_view(request, p_id):
 
     process = process_instance.process
     form = ProcessForm(instance=process)
-    return render(request, 'main/process-instance.html', {'process_instance': process_instance, 'form': form, 'ordered_task': ordered_task, 'cur': process_instance.current_task.task, 'after': after_current})
 
-@login_required(login_url='/login/')
+    for field in form.fields:
+        field.widget.attrs['readonly'] = True
+
+    return render(request, 'main/process-instance.html',
+                  {'process_instance': process_instance, 'form': form, 'ordered_task': ordered_task,
+                   'cur': process_instance.current_task.task, 'after': after_current})
+
+
+@login_required
 def task_instance_view(request, t_id):
     user = request.user
     task_instance = get_object_or_404(TaskInstance, id=t_id)
@@ -204,12 +209,13 @@ def task_instance_view(request, t_id):
     return render(request, 'main/task-instance.html', {'task_instance': task_instance, 'form': form})
 
 
-@login_required(login_url='/login/')
+@login_required
 def account_view(request):
     form = UserForm(instance=request.user)
     return render(request, 'main/account.html', {'form': form})
 
-@login_required(login_url='/login/')
+
+@login_required
 def contact_view(request):
     processes = Process.objects.all()
     return render(request, 'main/contact.html', {'processes': processes})
