@@ -54,14 +54,14 @@ class ProcessInstance(models.Model):
         self.current_task.save()
         if not self.current_task.task.end_task:
             self.current_task = self.current_task.next_accept()
-            self.current_task.save()
+            self.save()
 
     def reject(self):
         self.current_task.status = 'reject'
         self.current_task.save()
         if not self.current_task.task.end_task:
             self.current_task = self.current_task.next_reject()
-            self.current_task.save()
+            self.save()
 
     def __str__(self):
         return self.process.name + "-instance-" + str(self.id)
