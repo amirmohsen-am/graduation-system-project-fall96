@@ -83,14 +83,14 @@
 
         {% if user.is_staff  %}
             <div class="text-center">
-                <form action="" method="post" class="form">
+                <form action="" method="post" class="form" >
                     {% csrf_token %}
                     {% buttons %}
                         <input type="hidden" name="action" value="accept">
                         <button type="submit" class="btn btn-success">Accept</button>
                     {% endbuttons %}
                 </form>
-                <form action="" method="post" class="form">
+                <form action="" method="post" class="form" >
                     {% csrf_token %}
                     {% buttons %}
                         <input type="hidden" name="action" value="reject">

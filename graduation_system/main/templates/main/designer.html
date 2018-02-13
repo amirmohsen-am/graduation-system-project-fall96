@@ -53,7 +53,7 @@
                           <th scope="row">{{ forloop.counter }}</th>
                           <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
                           <td>{{ proc.task_set.all|length }}</td>
-                          <td> <a href="{% url 'delete-view' proc.id %}" >  <img style="height: 20px" src={% static "pics/Delete_icon.png" %}  alt="Delete"> </a></td>
+                          <td> <a href="{% url 'process-delete' proc.id %}" >  <img style="height: 20px" src={% static "pics/Delete_icon.png" %}  alt="Delete"> </a></td>
                       </tr>
                 {% endfor %}
           </tbody>
