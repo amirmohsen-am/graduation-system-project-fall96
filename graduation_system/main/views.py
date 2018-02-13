@@ -190,8 +190,11 @@ def process_instance_view(request, p_id):
     process = process_instance.process
     form = ProcessForm(instance=process)
 
-    for field in form.fields:
+    for field_name, field in form.fields.items():
         field.widget.attrs['readonly'] = True
+    for field_name, field in form.fields.items():
+        field.widget.attrs['disabled'] = True
+
 
     return render(request, 'main/process-instance.html',
                   {'process_instance': process_instance, 'form': form, 'ordered_task': ordered_task,
@@ -214,6 +217,14 @@ def task_instance_view(request, t_id):
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=task_instance)
     form = TaskForm(instance=task_instance.task)
+
+    for field_name, field in form.fields.items():
+        field.widget.attrs['readonly'] = True
+
+    for field_name, field in form.fields.items():
+        field.widget.attrs['disabled'] = True
+
+
     return render(request, 'main/task-instance.html', {'task_instance': task_instance, 'form': form})
 
 
