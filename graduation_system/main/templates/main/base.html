@@ -50,6 +50,9 @@
         <div class="collapse navbar-collapse" id="navbarCollapse" >
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
+                    <a class="nav-link {% is_active request 'designer' %}" href="{% url 'contact-view' %}" style="padding-right: 20px" >Contact</a>
+                </li>
+                <li class="nav-item active">
                     <a class="nav-link {% is_active request 'designer' %}" href="{% url 'designer-view' %}" style="padding-right: 20px" >Designer</a>
                 </li>
                 <li class="nav-item active">
@@ -58,6 +61,7 @@
                 <li class="nav-item active">
                     <a class="nav-link {% is_active request 'staff' %}" href="{% url 'staff-view' %}">Staff view</a>
                 </li>
+
 {#                <li class="nav-item">#}
 {#                    <a class="nav-link disabled" href="#">Disabled</a>#}
 {#                </li>#}

@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^process_instance/(?P<p_id>\d+)$', views.process_instance_view, name='process-instance-view'),
     url(r'^task_instance/(?P<t_id>\d+)$', views.task_instance_view, name='task-instance-view'),
     url(r'^account/$', views.account_view, name='account-view'),
+    url(r'^contact/$', views.contact_view, name='contact-view'),
 ]

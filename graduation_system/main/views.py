@@ -208,3 +208,8 @@ def task_instance_view(request, t_id):
 def account_view(request):
     form = UserForm(instance=request.user)
     return render(request, 'main/account.html', {'form': form})
+
+@login_required(login_url='/login/')
+def contact_view(request):
+    processes = Process.objects.all()
+    return render(request, 'main/contact.html', {'processes': processes})
