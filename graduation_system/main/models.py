@@ -46,6 +46,9 @@ class ProcessInstance(models.Model):
     process = models.ForeignKey(Process, blank=False)
     current_task = models.ForeignKey('TaskInstance', blank=True, null=True, related_name='+')
 
+    def process_complete(self):
+        return self.current_task.task.end_task
+
     def next_accept(self):
         next_task = self.current_task.task.next_task_accept
         return TaskInstance.objects.get(task=next_task, process_instance=self)
@@ -56,9 +59,11 @@ class ProcessInstance(models.Model):
 
     def accept(self):
         self.current_task = self.next_accept()
+        self.save()
 
     def reject(self):
         self.current_task = self.next_reject()
+        self.save()
 
     def __str__(self):
         return self.process.name + "-instance-" + str(self.id)
