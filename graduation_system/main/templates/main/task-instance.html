@@ -19,7 +19,7 @@
 
 
     {% buttons %}
-          <button type="submit" class="btn btn-primary">Pay</button>
+          <a type="submit" class="btn btn-primary" href="{% url 'bank-view' task_instance.id%}">Pay</a>
     {% endbuttons %}
 
     {% for comments in task_instance.comment_set.all %}
