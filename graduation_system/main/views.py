@@ -160,7 +160,7 @@ def staff_view(request):
 
 
 @login_required
-@user_passes_test(staff_check)
+# @user_passes_test(staff_check)
 def process_instance_delete(request, p_id):
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
     messages.success(request, 'Process instance has been deleted')
@@ -176,16 +176,23 @@ def process_instance_view(request, p_id):
         action = request.POST.get('action')
         if user.is_staff:
             if action == 'accept':
-                messages.success(request, 'Task successfully accepted')
-                process_instance.accept()
+                if not current_task.task.end_task and current_task.task.next_task_accept is None:
+                    messages.error(request, 'Task has no next_task_accept')
+                else:
+                    messages.success(request, 'Task successfully accepted')
+                    process_instance.accept()
             if action == 'reject':
-                messages.success(request, 'Task successfully rejected')
-                process_instance.reject()
-            if action == 'staff_done':
-                current_task.status = 'student_pending'
+                if not current_task.task.end_task and current_task.task.next_task_reject is None:
+                    messages.error(request, 'Task has no next_task_reject')
+                else:
+                    messages.success(request, 'Task successfully rejected')
+                    process_instance.reject()
+            # if action == 'staff_done':
+            #     current_task.status = 'student_pending'
         if user_is_student(user):
             if action == 'student_done':
                 current_task.status = 'staff_pending'
+                current_task.save()
         text = request.POST.get('comment-text')
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=current_task)
@@ -236,12 +243,13 @@ def task_instance_view(request, t_id):
     task_instance = get_object_or_404(TaskInstance, id=t_id)
     if request.method == 'POST':
         action = request.POST.get('action')
-        if not user_is_student(user):
-            if action == 'staff_done':
-                task_instance.status = 'student_pending'
-        else:
+        if user_is_student(user):
             if action == 'student_done':
                 task_instance.status = 'staff_pending'
+                task_instance.save()
+        # else:
+        #     if action == 'staff_done':
+        #         task_instance.status = 'student_pending'
         text = request.POST.get('comment-text')
         if text is not None:
             Comment.objects.create(user=user, text=text, task_instance=task_instance)
