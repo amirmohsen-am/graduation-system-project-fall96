@@ -34,6 +34,7 @@
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
+          <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
@@ -41,7 +42,8 @@
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-instance-view' task_instance.id %}">{{ task_instance.task.name }}</a></td>
-                  <td>{{ task.description }}</td>
+                  <td>{{ task_instance.task.description }}</td>
+                   <td>{{ task_instance.status }}</td>
                 </tr>
             {% endfor %}
       </tbody>
