@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^task/(?P<task_id>\d+)$', views.task_view, name='task-view'),
     url(r'^task_add/(?P<process_id>\d+)$', views.task_add, name='task-add'),
     url(r'^process_add/', views.process_add, name='process-add'),
+    url(r'^process_delete/(?P<process_id>\d+)', views.process_delete, name='process-delete'),
     url(r'^process_select/(?P<process_id>\d+)$', views.process_select, name='process-select'),
     url(r'^student_view/', views.student_view, name='student-view'),
     # url(r'^task_graph/(?P<process_id>\d+)$', views.task_graph, name='task-graph'),

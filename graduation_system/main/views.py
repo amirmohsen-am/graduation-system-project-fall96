@@ -10,10 +10,11 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
+from django.views.generic import DeleteView
+
 from main.utils import staff_check, student_check, user_is_student
 from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment
 from django.urls import reverse
-
 
 
 @login_required
@@ -64,16 +65,17 @@ def task_view(request, task_id):
 def task_add(request, process_id):
     process = get_object_or_404(Process, id=process_id)
     if request.method == 'POST':
-        form = TaskForm(request.POST)
+        form = TaskForm(request.POST, process_custom=process)
         if form.is_valid():
             form.save()
             messages.success(request, 'Task has been created')
             return redirect(reverse('process-view', args=[process_id]))
             # return redirect(request.META.get('HTTP_REFERER'))
     else:
-        form = TaskForm()
+        form = TaskForm(process_custom=process)
     form.fields["process"].initial = process
     form.fields['process'].widget.attrs['readonly'] = True
+    form.fields['process'].widget.attrs['disabled'] = True
     return render(request, 'main/task_add.html', {'form': form})
 
 
@@ -91,6 +93,14 @@ def process_add(request):
     form.fields['task_start'].widget = forms.HiddenInput()
     return render(request, 'main/process_add.html', {'form': form})
 
+
+@login_required
+@user_passes_test(staff_check)
+def process_delete(request, process_id):
+    process = get_object_or_404(Process, id=process_id)
+    messages.success(request, 'Process has been deleted')
+    process.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
 
 # new instance of process
 @login_required
@@ -132,7 +142,10 @@ def staff_view(request):
     user = request.user
     # group_names = user.groups.values_list('name', flat=True)
     group_names = user.groups.all()
-    task_instances = TaskInstance.objects.all().filter(task__group__in=group_names)
+    if user.is_superuser:
+        task_instances = TaskInstance.objects.all().filter()
+    else:
+        task_instances = TaskInstance.objects.all().filter(task__group__in=group_names)
     return render(request, 'main/staff-view.html', {'task_instances': task_instances})
 
 
@@ -174,6 +187,8 @@ def process_instance_view(request, p_id):
         if b == 1:
             b = 0
         t = t.next_task_accept
+        if t is None:
+            break
         if t.end_task == True:
             if b == 2:
                 ordered_task.append(t)
@@ -188,7 +203,6 @@ def process_instance_view(request, p_id):
         field.widget.attrs['readonly'] = True
     for field_name, field in form.fields.items():
         field.widget.attrs['disabled'] = True
-
 
     return render(request, 'main/process-instance.html',
                   {'process_instance': process_instance, 'form': form, 'ordered_task': ordered_task,
@@ -217,7 +231,6 @@ def task_instance_view(request, t_id):
 
     for field_name, field in form.fields.items():
         field.widget.attrs['disabled'] = True
-
 
     return render(request, 'main/task-instance.html', {'task_instance': task_instance, 'form': form})
 
