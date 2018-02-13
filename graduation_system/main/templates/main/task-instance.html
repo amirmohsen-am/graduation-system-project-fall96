@@ -17,7 +17,13 @@
         </form>
      <link rel="stylesheet" type="text/css" href="">
 
+
+    {% buttons %}
+          <button type="submit" class="btn btn-primary">Pay</button>
+    {% endbuttons %}
+
     {% for comments in task_instance.comment_set.all %}
+
         <div class="container">
             <div class="row">
                 <div class="col-sm-8">
@@ -31,9 +37,10 @@
                                     <a href="#"><b>{{ comments.user }}</b></a>
                                     made a post.
                                 </div>
-                                <h6 class="text-muted time">1 minute ago</h6>
+                                <h6 class="text-muted time">{{ comments.time }}</h6>
                             </div>
                         </div>
+                        <div style="height: 50px"></div>
                         <div class="post-description">
                             <p>{{ comments.text }}</p>
                             <div class="stats">
@@ -55,7 +62,7 @@
                 <textarea name="comment-text" class="form-control" id="exampleTextarea" rows="3"></textarea>
               </div>
             {% buttons %}
-                <button type="submit" class="btn btn-secondary btn-lg btn-block">Post</button>
+                <button type="submit" class="btn btn-primary">Post</button>
             {% endbuttons %}
     </form>
 {% endblock %}
