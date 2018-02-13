@@ -141,6 +141,7 @@
 						    </li>
 
                          {% endfor %}
+                            {% if cur  %}
                             <li class="timeline-item">
                                 <a href=  "{% url 'task-instance-view' process_instance.current_task.id %}">,
 							<div class="timeline-badge warning">
@@ -156,6 +157,8 @@
 								</div>
 							</div>
 						    </li>
+                            {% endif %}
+
 
                         {% for task in after %}
                             <li class="timeline-item">

@@ -212,7 +212,10 @@ def process_instance_view(request, p_id):
             break
         if b == 1:
             b = 0
-        t = t.next_task_accept
+        next_task = t.task.next_task_accept
+        if next_task is None:
+            break
+        t = TaskInstance.objects.get(task=next_task, process_instance=process_instance)
 
     process = process_instance.process
     form = ProcessForm(instance=process)
