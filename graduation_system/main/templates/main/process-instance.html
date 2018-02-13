@@ -3,6 +3,8 @@
 {% block title %} Designer {% endblock %}
 
 {% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/timeline.css' %}">
 {% endblock %}
 
 {% block script %}
@@ -14,20 +16,12 @@
     {% load bootstrap4 %}
 
 
-    {% if not user.is_staff  %}
-        <form action="" method="post" class="h5 text-center mb-4">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-        </form>
-    {% else %}
-        <form action="" method="post" class="h5 text-center mb-4">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-{#            {% buttons %}#}
-{#                <a type="submit" class="btn btn-secondary btn-lg btn-block" >Submit</a>#}
-{#            {% endbuttons %}#}
-        </form>
-    {% endif %}
+
+    <form action="" method="post" class="form h5 text-center mb-4">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+    </form>
+
 
 
 {#    <button type="button" class="btn btn-secondary btn-lg btn-block" >Submit</button>#}
@@ -42,10 +36,10 @@
         </tr>
       </thead>
       <tbody>
-            {% for task in process_instance.process.task_set.all %}
+            {% for task_instance in process_instance.taskinstance_set.all %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
-                  <td> <a href="{% url 'task-instance-view' task.id %}">{{ task.name }}</a></td>
+                  <td> <a href="{% url 'task-instance-view' task_instance.id %}">{{ task_instance.task.name }}</a></td>
                   <td>{{ task.description }}</td>
                 </tr>
             {% endfor %}
