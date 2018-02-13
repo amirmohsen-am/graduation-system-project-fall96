@@ -10,7 +10,7 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from main.accesses import staff_check, student_check
+from main.utils import staff_check, student_check, user_is_student
 from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment
 from django.urls import reverse
 
@@ -97,9 +97,6 @@ def process_add(request):
 @user_passes_test(student_check)
 def process_select(request, process_id):
     user = request.user
-    if user.student is None:
-        messages.error(request, 'You are not a student')
-        return redirect(request.META.get('HTTP_REFERER'))
 
     process = get_object_or_404(Process, id=process_id)
     instances = process.processinstance_set.filter(student=user.student)
@@ -126,9 +123,6 @@ def process_select(request, process_id):
 def student_view(request):
     user = request.user
     processes = Process.objects.all()
-    if user.student is None:
-        messages.error(request, 'You are not a student')
-        return redirect(request.META.get('HTTP_REFERER'))
     return render(request, 'main/student_view.html', {'student': user.student, 'processes': processes})
 
 
@@ -149,7 +143,7 @@ def process_instance_view(request, p_id):
     current_task = process_instance.current_task
     if request.method == 'POST':
         action = request.POST.get('action')
-        if user.student is not None:
+        if user.is_staff:
             if action == 'accept':
                 messages.success(request, 'Task successfully accepted')
                 process_instance.accept()
@@ -158,7 +152,7 @@ def process_instance_view(request, p_id):
                 process_instance.reject()
             if action == 'staff_done':
                 current_task.status = 'student_pending'
-        else:
+        if user_is_student(user):
             if action == 'student_done':
                 current_task.status = 'staff_pending'
         text = request.POST.get('comment-text')
@@ -207,7 +201,7 @@ def task_instance_view(request, t_id):
     task_instance = get_object_or_404(TaskInstance, id=t_id)
     if request.method == 'POST':
         action = request.POST.get('action')
-        if user.student is not None:
+        if not user_is_student(user):
             if action == 'staff_done':
                 task_instance.status = 'student_pending'
         else:
