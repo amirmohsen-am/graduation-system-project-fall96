@@ -27,6 +27,8 @@
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
+            <th scope="col"> Edit </th>
+              <th scope="col"> Delete </th>
         </tr>
       </thead>
       <tbody>
@@ -35,6 +37,9 @@
                   <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-view' task.id %}">{{ task.name }}</a></td>
                   <td>{{ task.description }}</td>
+                    <td><a href="{% url 'task-view' task.id  %}"  data-placement="top" style="height: 20px" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="fa fa-pencil"></span></button></a></td>
+                    <td><a href="{% url 'task-delete' task.id %}"  data-placement="top" style="height: 20px" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" > <span class="fa fa-trash"></span> </button></a></td>
+
                 </tr>
             {% endfor %}
       </tbody>
