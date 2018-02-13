@@ -30,6 +30,7 @@ def designer_view(request):
 
 
 @login_required
+@user_passes_test(student_check)
 def process_view(request, process_id):
     process = get_object_or_404(Process, id=process_id)
     if request.method == 'POST':
@@ -46,6 +47,7 @@ def process_view(request, process_id):
 
 
 @login_required
+@user_passes_test(student_check)
 def task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -77,6 +79,14 @@ def task_add(request, process_id):
     form.fields['process'].widget.attrs['readonly'] = True
     form.fields['process'].widget.attrs['disabled'] = True
     return render(request, 'main/task_add.html', {'form': form})
+
+@login_required
+@user_passes_test(staff_check)
+def task_delete(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    messages.success(request, 'Task has been deleted')
+    task.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required
@@ -148,6 +158,14 @@ def staff_view(request):
         task_instances = TaskInstance.objects.all().filter(task__group__in=group_names)
     return render(request, 'main/staff-view.html', {'task_instances': task_instances})
 
+
+@login_required
+@user_passes_test(staff_check)
+def process_instance_delete(request, p_id):
+    process_instance = get_object_or_404(ProcessInstance, id=p_id)
+    messages.success(request, 'Process instance has been deleted')
+    process_instance.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
 def process_instance_view(request, p_id):
