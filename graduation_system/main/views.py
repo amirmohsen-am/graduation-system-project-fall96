@@ -180,6 +180,7 @@ def process_instance_view(request, p_id):
     while 1:
         if t == process_instance.current_task.task:
             b = 1
+
         if b == 2:
             ordered_task.append(t)
         if b == 0:
