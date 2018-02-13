@@ -175,10 +175,10 @@ def process_instance_view(request, p_id):
     ordered_task = []
     after_current = []
     p = process_instance.process
-    t = p.task_start
+    t = TaskInstance.objects.get(task=p.task_start, process_instance=process_instance)
     b = 2
     while 1:
-        if t == process_instance.current_task.task:
+        if t == process_instance.current_task:
             b = 1
         if b == 2:
             ordered_task.append(t)
@@ -188,13 +188,16 @@ def process_instance_view(request, p_id):
             b = 0
         if t is None:
             break
-        if t.end_task == True:
+        if t.task.end_task == True:
             if b == 2:
                 ordered_task.append(t)
             if b == 0:
                 after_current.append(t)
             break
-        t = t.next_task_accept
+        next_task = t.task.next_task_accept
+        if next_task is None:
+            break
+        t = TaskInstance.objects.get(task=next_task, process_instance=process_instance)
 
     process = process_instance.process
     form = ProcessForm(instance=process)
@@ -206,7 +209,7 @@ def process_instance_view(request, p_id):
 
     return render(request, 'main/process-instance.html',
                   {'process_instance': process_instance, 'form': form, 'ordered_task': ordered_task,
-                   'cur': process_instance.current_task.task, 'after': after_current})
+                   'cur': process_instance.current_task, 'after': after_current})
 
 
 @login_required
