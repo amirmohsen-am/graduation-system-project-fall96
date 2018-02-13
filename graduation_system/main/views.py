@@ -13,7 +13,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import DeleteView
 
 from main.utils import staff_check, student_check, user_is_student
-from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment
+from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment, TempTask
 from django.urls import reverse
 
 
@@ -30,7 +30,7 @@ def designer_view(request):
 
 
 @login_required
-@user_passes_test(student_check)
+@user_passes_test(staff_check)
 def process_view(request, process_id):
     process = get_object_or_404(Process, id=process_id)
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def process_view(request, process_id):
 
 
 @login_required
-@user_passes_test(student_check)
+@user_passes_test(staff_check)
 def task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -279,4 +279,11 @@ def bank_view(request, t_id):
 @login_required
 def task_graph(request, process_id):
     process = get_object_or_404(Process, id=process_id)
-    return render(request, 'main/task_graph.html', {'process': process})
+    ret = []
+    tasks = Task.objects.filter(process=process)
+
+    for task in tasks:
+        temp = TempTask.objects.create(sel=task.name, acc=task.next_task_accept.name, rej=task.next_task_reject.name)
+        ret.append(temp)
+
+    return render(request, 'main/task_graph.html', {'process': process, 'ret': ret})

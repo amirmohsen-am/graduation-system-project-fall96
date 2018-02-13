@@ -135,3 +135,9 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['username', 'password', 'first_name', 'last_name', 'last_login']
+
+
+class TempTask(models.Model):
+    sel = models.CharField(max_length=100)
+    acc = models.CharField(max_length=100)
+    rej = models.CharField(max_length=100)
