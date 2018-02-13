@@ -23,7 +23,6 @@
           <tbody>
                 {% for task_instance in task_instances %}
                     <tr>
-                    {{ task_instance.process_instance.id }}
                       <th scope="row">{{ forloop.counter }}</th>
                       <td> <a href="{% url 'process-instance-view' task_instance.process_instance.id %}">{{ task_instance.process_instance.process.name }}</a></td>
                       <td>{{ task_instance.task.name }}</td>
