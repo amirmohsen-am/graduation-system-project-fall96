@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 from django.forms import ModelForm
+from django import forms
 
 
 class Student(models.Model):
@@ -28,6 +29,7 @@ class Task(models.Model):
     process = models.ForeignKey(Process, blank=False)
     description = models.CharField(max_length=1000, blank=False)
     group = models.ForeignKey(Group, blank=True, null=True)
+    debt = models.IntegerField(default=0)
 
     end_task = models.BooleanField(default=False)
 
@@ -92,12 +94,26 @@ class ProcessForm(ModelForm):
     class Meta:
         model = Process
         fields = ['name', 'task_start']
+        # widgets = {
+        #     'task_start': forms.ModelChoiceField(queryset=Task.objects.filter(process=))
+        # }
+
+    def __init__(self, *args, **kwargs):
+        super(ProcessForm, self).__init__(*args, **kwargs)
+        self.fields['task_start'].queryset = Task.objects.filter(process=self.instance)
 
 
 class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        self.fields['next_task_accept'].queryset = Task.objects.filter(process=self.instance.process)
+        self.fields['next_task_reject'].queryset = Task.objects.filter(process=self.instance.process)
+
+
 
 
 class UserForm(ModelForm):
