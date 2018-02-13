@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserChangeForm
 
 from django.shortcuts import render, get_object_or_404
@@ -10,8 +10,10 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
+from main.accesses import staff_check, student_check
 from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment
 from django.urls import reverse
+
 
 
 @login_required
@@ -20,6 +22,7 @@ def index(request):
 
 
 @login_required
+@user_passes_test(staff_check)
 def designer_view(request):
     processes = Process.objects.all()
     return render(request, 'main/designer.html', {'processes': processes})
@@ -57,6 +60,7 @@ def task_view(request, task_id):
 
 
 @login_required
+@user_passes_test(staff_check)
 def task_add(request, process_id):
     process = get_object_or_404(Process, id=process_id)
     if request.method == 'POST':
@@ -74,6 +78,7 @@ def task_add(request, process_id):
 
 
 @login_required
+@user_passes_test(staff_check)
 def process_add(request):
     if request.method == 'POST':
         form = ProcessForm(request.POST)
@@ -89,6 +94,7 @@ def process_add(request):
 
 # new instance of process
 @login_required
+@user_passes_test(student_check)
 def process_select(request, process_id):
     user = request.user
     if user.student is None:
@@ -116,6 +122,7 @@ def process_select(request, process_id):
 
 
 @login_required
+@user_passes_test(student_check)
 def student_view(request):
     user = request.user
     processes = Process.objects.all()
@@ -126,6 +133,7 @@ def student_view(request):
 
 
 @login_required
+@user_passes_test(staff_check)
 def staff_view(request):
     user = request.user
     # group_names = user.groups.values_list('name', flat=True)
