@@ -50,12 +50,18 @@ class ProcessInstance(models.Model):
         return self.current_task.task.end_task
 
     def accept(self):
-        self.current_task = self.current_task.next_accept()
-        self.save()
+        self.current_task.status = 'accept'
+        self.current_task.save()
+        if not self.current_task.task.end_task:
+            self.current_task = self.current_task.next_accept()
+            self.current_task.save()
 
     def reject(self):
-        self.current_task = self.current_task.next_reject()
-        self.save()
+        self.current_task.status = 'reject'
+        self.current_task.save()
+        if not self.current_task.task.end_task:
+            self.current_task = self.current_task.next_reject()
+            self.current_task.save()
 
     def __str__(self):
         return self.process.name + "-instance-" + str(self.id)
@@ -83,7 +89,7 @@ class TaskInstance(models.Model):
 
 
     def __str__(self):
-        return self.task.name + "instance-" + str(self.id)
+        return self.task.name + "-instance-" + str(self.id)
 
 
 class Comment(models.Model):
