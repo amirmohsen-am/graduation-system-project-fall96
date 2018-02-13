@@ -5,10 +5,6 @@ from django.contrib.auth import views as auth_views
 
 
 
-
-
-
-
 from . import views
 
 
@@ -22,7 +18,6 @@ urlpatterns = [
     url(r'^task/(?P<task_id>\d+)$', views.task_view, name='task-view'),
     url(r'^task_add/(?P<process_id>\d+)$', views.task_add, name='task-add'),
     url(r'^process_add/', views.process_add, name='process-add'),
-    url(r'^process_delete/(?P<process_id>\d+)', views.process_delete, name='process-delete'),
     url(r'^process_select/(?P<process_id>\d+)$', views.process_select, name='process-select'),
     url(r'^student_view/', views.student_view, name='student-view'),
     # url(r'^task_graph/(?P<process_id>\d+)$', views.task_graph, name='task-graph'),
@@ -31,6 +26,8 @@ urlpatterns = [
     url(r'^task_instance/(?P<t_id>\d+)$', views.task_instance_view, name='task-instance-view'),
     url(r'^account/$', views.account_view, name='account-view'),
     url(r'^contact/$', views.contact_view, name='contact-view'),
+    url(r'^process_delete/(?P<process_id>\d+)', views.process_delete, name='process-delete'),
+    url(r'^process_instance_delete/(?P<p_id>\d+)', views.process_instance_delete, name='process-instance-delete'),
+    url(r'^task_delete/(?P<task_id>\d+)', views.task_delete, name='task-delete'),
     url(r'^bank/(?P<t_id>\d+)$', views.bank_view, name='bank-view'),
-    url(r'^delete/(?P<process_id>\d+)$', views.process_delete, name='delete-view'),
 ]

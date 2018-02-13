@@ -30,6 +30,7 @@ def designer_view(request):
 
 
 @login_required
+@user_passes_test(student_check)
 def process_view(request, process_id):
     process = get_object_or_404(Process, id=process_id)
     if request.method == 'POST':
@@ -46,6 +47,7 @@ def process_view(request, process_id):
 
 
 @login_required
+@user_passes_test(student_check)
 def task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -75,8 +77,16 @@ def task_add(request, process_id):
         form = TaskForm(process_custom=process)
     form.fields["process"].initial = process
     form.fields['process'].widget.attrs['readonly'] = True
-    form.fields['process'].widget.attrs['disabled'] = True
+    # form.fields['process'].widget.attrs['disabled'] = True
     return render(request, 'main/task_add.html', {'form': form})
+
+@login_required
+@user_passes_test(staff_check)
+def task_delete(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    messages.success(request, 'Task has been deleted')
+    task.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required
@@ -150,6 +160,14 @@ def staff_view(request):
 
 
 @login_required
+@user_passes_test(staff_check)
+def process_instance_delete(request, p_id):
+    process_instance = get_object_or_404(ProcessInstance, id=p_id)
+    messages.success(request, 'Process instance has been deleted')
+    process_instance.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required
 def process_instance_view(request, p_id):
     user = request.user
     process_instance = get_object_or_404(ProcessInstance, id=p_id)
@@ -184,8 +202,6 @@ def process_instance_view(request, p_id):
             ordered_task.append(t)
         if b == 0:
             after_current.append(t)
-        if b == 1:
-            b = 0
         if t is None:
             break
         if t.task.end_task == True:
@@ -194,10 +210,9 @@ def process_instance_view(request, p_id):
             if b == 0:
                 after_current.append(t)
             break
-        next_task = t.task.next_task_accept
-        if next_task is None:
-            break
-        t = TaskInstance.objects.get(task=next_task, process_instance=process_instance)
+        if b == 1:
+            b = 0
+        t = t.next_task_accept
 
     process = process_instance.process
     form = ProcessForm(instance=process)
