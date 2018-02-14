@@ -953,20 +953,17 @@
     //-------------------------------------------------------------------------------------------------
     var temp = [];
 
-      {% for task in process.task_set.all %}
-           temp.push({name: ' ', from: '{{ task.name }}', to: '{{ task.next_task_success.name }}',  dot: { color: 'blue', headport: 'n', tailport: 'n'} });
-      {% endfor %}
 
-        var b = 1;
-      {% for task in process.task_set.all %}
-          if (b == 1) {
-              temp.push({name: ' ', from: 'START', to: '{{ task.name }}',  dot: { color: 'black', headport: 's', tailport: 's'} });
-              b=0;
-          }
-           temp.push({name: ' ', from: '{{ task.name }}', to: '{{ task.next_task_fail.name }}',  dot: { color: 'red', headport: 's', tailport: 's'} });
+      {% for task in ret %}
+           temp.push({name: ' ', from: '{{ task.sel }}', to: '{{ task.acc }}',  dot: { color: 'blue', headport: 'n', tailport: 'n'} });
       {% endfor %}
+      {% for task in ret %}
+           temp.push({name: ' ', from: '{{ task.sel }}', to: '{{ task.rej }}',  dot: { color: 'red', headport: 'n', tailport: 'n'} });
+      {% endfor %}
+      temp.push({name: ' ', from: 'START', to: '{{ process.task_start.name }}',  dot: { color: 'black', headport: 's', tailport: 's'} });
 
-       var fsm = new StateMachine.factory({
+
+       var fsm = new StateMachine({
         transitions: temp,
         data: function(color) {      //  <-- use a method that can be called for each instance
         return {

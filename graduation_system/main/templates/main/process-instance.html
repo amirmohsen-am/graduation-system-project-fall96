@@ -41,7 +41,7 @@
                   <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-instance-view' task_instance.id %}">{{ task_instance.task.name }}</a></td>
                   <td>{{ task_instance.task.description }}</td>
-                   <td>{{ task_instance.status }}</td>
+                   <td>{{ task_instance.get_status_display }}</td>
                 </tr>
             {% endfor %}
       </tbody>
@@ -79,6 +79,8 @@
 
 
         {% if user.is_staff  %}
+            {% if not process_instance.process_complete  %}
+                aaaaaa
             <div class="text-center">
                 <form action="" method="post" class="form" >
                     {% csrf_token %}
@@ -95,8 +97,11 @@
                     {% endbuttons %}
                 </form>
             </div>
+            {% endif %}
         {% endif %}
         {% if user.student %}
+            {% if not process_instance.process_complete  %}
+                aaaa
             <div class="text-center">
                 <form action="" method="post" class="form">
                     {% csrf_token %}
@@ -107,6 +112,7 @@
                 </form>
 
             </div>
+            {% endif %}
         {% endif %}
 
 
