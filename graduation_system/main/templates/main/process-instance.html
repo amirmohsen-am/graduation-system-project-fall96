@@ -14,6 +14,11 @@
 {% block content %}
 
 
+    {% if process_instance.process_complete %}
+        <div class="alert alert-success text-center">
+            <h2 class="alert-heading"> Process has been completed</h2>
+        </div>
+    {% endif %}
     {% load bootstrap4 %}
 
 
