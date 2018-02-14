@@ -1,6 +1,9 @@
+import datetime
+
 from django import forms
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserChangeForm
+from django.forms.models import modelform_factory
 
 from django.shortcuts import render, get_object_or_404
 
@@ -13,7 +16,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import DeleteView
 
 from main.utils import staff_check, student_check, user_is_student
-from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment
+from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment, Payment, \
+    PaymentForm
 from django.urls import reverse
 
 
@@ -66,19 +70,23 @@ def task_view(request, task_id):
 @user_passes_test(staff_check)
 def task_add(request, process_id):
     process = get_object_or_404(Process, id=process_id)
-    if request.method == 'POST':
-        form = TaskForm(request.POST, process_custom=process)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Task has been created')
-            return redirect(reverse('process-view', args=[process_id]))
-            # return redirect(request.META.get('HTTP_REFERER'))
-    else:
-        form = TaskForm(process_custom=process)
-    form.fields["process"].initial = process
+    form = TaskForm(request.POST or None, process_custom=process, initial={'process': process})
+    # form.fields['process'].disabled = True
+
+    # process_name = request.POST.get('process', process.name)
+    # form.fields['process'].choices = [(process_name, process_name)]
+
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Task has been created')
+        return redirect(reverse('process-view', args=[process_id]))
+        # return redirect(request.META.get('HTTP_REFERER'))
+    # TODO: Bug in django field disable for ManyChoiceField
     form.fields['process'].widget.attrs['readonly'] = True
-    # form.fields['process'].widget.attrs['disabled'] = True
+    # form.fields['process'].widget.attrs['disabled'] = False
     return render(request, 'main/task_add.html', {'form': form})
+
 
 @login_required
 @user_passes_test(staff_check)
@@ -111,6 +119,7 @@ def process_delete(request, process_id):
     messages.success(request, 'Process has been deleted')
     process.delete()
     return redirect(request.META.get('HTTP_REFERER'))
+
 
 # new instance of process
 @login_required
@@ -167,6 +176,7 @@ def process_instance_delete(request, p_id):
     process_instance.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
+
 @login_required
 def process_instance_view(request, p_id):
     user = request.user
@@ -187,8 +197,8 @@ def process_instance_view(request, p_id):
                 else:
                     messages.success(request, 'Task successfully rejected')
                     process_instance.reject()
-            # if action == 'staff_done':
-            #     current_task.status = 'student_pending'
+                    # if action == 'staff_done':
+                    #     current_task.status = 'student_pending'
         if user_is_student(user):
             if action == 'student_done':
                 current_task.status = 'staff_pending'
@@ -268,13 +278,34 @@ def account_view(request):
 
 @login_required
 def contact_view(request):
-    processes = Process.objects.all()
-    return render(request, 'main/contact.html', {'processes': processes})
+    return render(request, 'main/contact.html')
+
 
 @login_required
-def bank_view(request, t_id):
-    processes = Process.objects.all()
-    return render(request, 'main/bank.html', {'processes': processes})
+def payment_new_view(request, t_id):
+    task_instance = get_object_or_404(TaskInstance, id=t_id)
+    form = PaymentForm(request.POST or None, initial={'amount': task_instance.task.debt})
+    form.fields['amount'].disabled = True
+
+    if form.is_valid():
+        payment = form.save(commit=False)
+        payment.datetime = datetime.datetime.now()
+        payment.save()
+        task_instance.payment = payment
+        task_instance.save()
+        messages.success(request, 'Payment was successful')
+        return redirect(reverse('task-instance-view', args=[t_id]))
+    return render(request, 'main/payment.html', {'form': form, 'new_payment': True})
+
+@login_required
+def payment_view(request, t_id):
+    task_instance = get_object_or_404(TaskInstance, id=t_id)
+    form = PaymentForm(instance=task_instance)
+    for field_name, field in form.fields.items():
+        field.widget.attrs['disabled'] = True
+
+    return render(request, 'main/payment.html', {'form': form})
+
 
 @login_required
 def task_graph(request, process_id):

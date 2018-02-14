@@ -6,6 +6,14 @@ from django.forms import ModelForm
 from django import forms
 
 
+class Payment(models.Model):
+    bank = models.CharField(max_length=100, blank=False, default='Mellat')
+    card_number = models.IntegerField()
+    amount = models.IntegerField(blank=False)
+    payer = models.CharField(max_length=100, blank=True)
+    datetime = models.DateTimeField(blank=True, null=True)
+
+
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     starting_year = models.IntegerField()
@@ -79,6 +87,8 @@ class TaskInstance(models.Model):
     task = models.ForeignKey(Task, blank=False)
     status = models.CharField(max_length=20, choices=TASK_STATUS, default='student_pending')
 
+    payment = models.ForeignKey(Payment, blank=True, null=True)
+
     def next_accept(self):
         next_task = self.task.next_task_accept
         return TaskInstance.objects.get(task=next_task, process_instance=self.process_instance)
@@ -86,7 +96,6 @@ class TaskInstance(models.Model):
     def next_reject(self):
         next_task = self.task.next_task_reject
         return TaskInstance.objects.get(task=next_task, process_instance=self.process_instance)
-
 
     def __str__(self):
         return self.task.name + "-instance-" + str(self.id)
@@ -135,3 +144,9 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['username', 'password', 'first_name', 'last_name', 'last_login']
+
+
+class PaymentForm(ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['bank', 'card_number', 'amount', 'payer']

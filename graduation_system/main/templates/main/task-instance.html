@@ -16,10 +16,12 @@
 
         </form>
      <link rel="stylesheet" type="text/css" href="">
-
-
     {% buttons %}
-          <a type="submit" class="btn btn-primary" href="{% url 'bank-view' task_instance.id%}">Pay</a>
+        {% if not task_instance.payment %}
+            <a type="submit" class="btn btn-primary" href="{% url 'payment-new-view' task_instance.id %}">Pay debt</a>
+        {% else %}
+            <a type="submit" class="btn btn-info" href="{% url 'payment-view' task_instance.id %}">Payment info</a>
+        {% endif %}
     {% endbuttons %}
 
     {% for comments in task_instance.comment_set.all %}

@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Process {% endblock %}
+
+{% block style %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+{% block content %}
+    {% load static %}
+{#    <h1 class="mt-5">{{ form.as_p }}</h1>#}
+{#    <p class="lead">Here you can see the details.</p>#}
+{#    <h3 style="text-align: center; height: 10%; padding-bottom: 40px"> Here is the Bank</h3>#}
+{#    <img style="height: 100px; padding-left: 46%; " src={% static "pics/sharif_logo.png" %} alt="Flowers in Chania">#}
+{#    <h4 style="text-align: center"> It's paid successfully</h4>#}
+
+    {% load bootstrap4 %}
+
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form layout="horizontal" %}
+        {% if new_payment %}
+        {% buttons %}
+            <button type="submit" class="btn btn-secondary btn-lg btn-block">Confirm Payment</button>
+        {% endbuttons %}
+        {% endif %}
+    </form>
+
+{% endblock %}
