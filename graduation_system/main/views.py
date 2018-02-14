@@ -16,7 +16,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import DeleteView
 
 from main.utils import staff_check, student_check, user_is_student
-from main.models import Process, Task, ProcessForm, TaskForm, ProcessInstance, TaskInstance, UserForm, Comment, PaymentForm
+from main.models import Process, Task, ProcessInstance, TaskInstance, Comment
+from main.forms import ProcessForm, TaskForm, UserForm, PaymentForm
 from django.urls import reverse
 
 
