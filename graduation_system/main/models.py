@@ -19,6 +19,15 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     starting_year = models.IntegerField()
 
+    def select_process(self, process):
+        process_instance = ProcessInstance(student=self, process=process)
+        process_instance.save()
+        for task in process.task_set.all():
+            TaskInstance.objects.create(process_instance=process_instance, task=task)
+        process_instance.current_task = TaskInstance.objects.get(task=process.task_start,
+                                                                 process_instance=process_instance)
+        process_instance.save()
+
     def __str__(self):
         return self.user.get_username()
 
