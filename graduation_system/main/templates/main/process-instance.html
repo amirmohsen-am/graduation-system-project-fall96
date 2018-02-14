@@ -40,8 +40,12 @@
       </thead>
       <tbody>
             {% for task_instance in process_instance.taskinstance_set.all %}
+                {% if process_instance.current_task == task_instance %}
+                    <tr class="table-info">
+                {% else %}
                 <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
+                {% endif %}
+                  <th scope="row">{{ forloop.counter }} {% if process_instance.current_task == task_instance %}(current) {% endif %}</th>
 {#                  <td> <a href="{% url 'task-instance-view' task_instance.id %}">{{ task_instance.task.name }}</a></td>#}
                     <td>{{ task_instance.task.name }}</td>
                   <td>{{ task_instance.task.description }}</td>
@@ -58,32 +62,32 @@
 
 
 
-    <h4 style="text-align: center; padding-top: 50px;"> Current task : </h4>
-
-
-    <table class="table table-hover" style="border: 2px solid black; ">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Description</th>
-            <th scope="col">Debt</th>
-            <th scope="col">Next task</th>
-          <th scope="col">ID</th>
-        </tr>
-      </thead>
-      <tbody>
-                <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td> <a href="{% url 'task-instance-view' process_instance.current_task.id %}">{{ process_instance.current_task.task.name }}</a></td>
-                  <td>{{ process_instance.current_task.task.description }}</td>
-                    <td>{{ process_instance.current_task.task.debt }}</td>
-                    <td>{{ process_instance.current_task.task.next_task_accept }}</td>
-                  <td>{{ process_instance.current_task.task.id }}</td>
-                </tr>
-      </tbody>
-    </table>
-
+{#    <h4 style="text-align: center; padding-top: 50px;"> Current task : </h4>#}
+{##}
+{##}
+{#    <table class="table table-hover" style="border: 2px solid black; ">#}
+{#      <thead class="thead-dark">#}
+{#        <tr>#}
+{#          <th scope="col">#</th>#}
+{#          <th scope="col">Name</th>#}
+{#          <th scope="col">Description</th>#}
+{#            <th scope="col">Debt</th>#}
+{#            <th scope="col">Next task</th>#}
+{#          <th scope="col">ID</th>#}
+{#        </tr>#}
+{#      </thead>#}
+{#      <tbody>#}
+{#                <tr>#}
+{#                  <th scope="row">{{ forloop.counter }}</th>#}
+{#                  <td> <a href="{% url 'task-instance-view' process_instance.current_task.id %}">{{ process_instance.current_task.task.name }}</a></td>#}
+{#                  <td>{{ process_instance.current_task.task.description }}</td>#}
+{#                    <td>{{ process_instance.current_task.task.debt }}</td>#}
+{#                    <td>{{ process_instance.current_task.task.next_task_accept }}</td>#}
+{#                  <td>{{ process_instance.current_task.task.id }}</td>#}
+{#                </tr>#}
+{#      </tbody>#}
+{#    </table>#}
+{##}
 
 {#        <input type="hidden" id="age-no" value="1">#}
 {#        <button id="load-content-button" class="btn btn-primary">دریافت اطلاعات بیشتر</button>#}
