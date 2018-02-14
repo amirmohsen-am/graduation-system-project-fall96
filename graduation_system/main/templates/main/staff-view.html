@@ -26,7 +26,7 @@
                       <th scope="row">{{ forloop.counter }}</th>
                       <td> <a href="{% url 'process-instance-view' task_instance.process_instance.id %}">{{ task_instance.process_instance.process.name }}</a></td>
                       <td>{{ task_instance.task.name }}</td>
-                      <td>{{ task_instance.get_status_display }}</td>
+                      <td><span class="badge badge-{{ task_instance.get_status_css_class }}">{{ task_instance.get_status_display }}</span></td>
                       <td> <a style="color: #721c24;">{{ task_instance.process_instance.student }}</a></td>
                     </tr>
                 {% endfor %}

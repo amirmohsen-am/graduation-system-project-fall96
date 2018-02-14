@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -105,6 +106,15 @@ class TaskInstance(models.Model):
     class Meta:
         unique_together = ("process_instance", "task")
 
+    def get_status_css_class(self):
+        css = {
+            'student_pending': 'warning',
+            'staff_pending': 'default',
+            'reject': 'danger',
+            'accept': 'success'
+        }
+        return css[self.status]
+
     def next_accept(self):
         next_task = self.task.next_task_accept
         return TaskInstance.objects.get(task=next_task, process_instance=self.process_instance)
@@ -125,5 +135,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
-
-

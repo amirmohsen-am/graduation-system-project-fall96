@@ -35,9 +35,9 @@
                     <td>{{ proc_instance.process.task_set.all|length }}</td>
 
                 {% if proc_instance.process_complete %}
-                    <td style="color: #28a745"> Done</td>
+                    <td><span class="badge badge-success">Done</span></td>
                 {% else %}
-                    <td style="color: #721c24">Pending</td>
+                    <td><span class="badge badge-info">Pending</span></td>
                 {% endif %}
                  <td><a href="{% url 'process-instance-delete' proc_instance.id %}"  data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-sm" data-title="Delete" data-toggle="modal" data-target="#delete" > <span class="fa fa-trash"></span> </button></a></td>
 {#                  <td> <a href="{% url 'process-instance-delete' proc_instance.id %}" >  <img style="height: 20px" src={% static "pics/Delete_icon.png" %}  alt="Delete"> </a></td>#}
