@@ -55,7 +55,7 @@ class ProcessInstance(models.Model):
     current_task = models.ForeignKey('TaskInstance', blank=True, null=True, related_name='+')
 
     def process_complete(self):
-        return self.current_task.task.end_task
+        return self.current_task.task.end_task and self.current_task.status == 'accept'
 
     def accept(self):
         self.current_task.status = 'accept'
