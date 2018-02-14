@@ -52,7 +52,7 @@
                 {% for proc in processes %}
                       <tr>
                           <th scope="row">{{ forloop.counter }}</th>
-                          <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
+                          <td> {{ proc.name }}</td>
                           <td>{{ proc.task_set.all|length }}</td>
 
                          <td><a href="{% url 'process-view' proc.id  %}"  data-placement="top" style="height: 20px" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="fa fa-pencil"></span></button></a></td>

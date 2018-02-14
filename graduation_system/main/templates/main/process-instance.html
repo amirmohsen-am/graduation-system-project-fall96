@@ -32,6 +32,8 @@
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
+            <th scope="col">End task</th>
+            <th scope="col">Debt</th>
           <th scope="col">Status</th>
         </tr>
       </thead>
@@ -41,6 +43,8 @@
                   <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-instance-view' task_instance.id %}">{{ task_instance.task.name }}</a></td>
                   <td>{{ task_instance.task.description }}</td>
+                    <td>{{ task_instance.task.end_task }}</td>
+                    <td>{{ task_instance.task.debt }}</td>
                    <td>{{ task_instance.get_status_display }}</td>
                 </tr>
             {% endfor %}
@@ -73,22 +77,26 @@
     </table>
 
 
-{#        <input type="hidden" id="page-no" value="1">#}
+{#        <input type="hidden" id="age-no" value="1">#}
 {#        <button id="load-content-button" class="btn btn-primary">دریافت اطلاعات بیشتر</button>#}
 {#        #}
 
 
         {% if user.is_staff  %}
             {% if not process_instance.process_complete  %}
-                aaaaaa
+
             <div class="text-center">
-                <form action="" method="post" class="form" >
+                <div style="padding-left:30%; width: 5%; float: left" >
+                    <form action="" method="post" class="form" >
                     {% csrf_token %}
                     {% buttons %}
                         <input type="hidden" name="action" value="accept">
                         <button type="submit" class="btn btn-success">Accept</button>
                     {% endbuttons %}
-                </form>
+                    </form>
+                </div>
+
+                <div style="padding-left: 5% ">
                 <form action="" method="post" class="form" >
                     {% csrf_token %}
                     {% buttons %}
@@ -96,12 +104,13 @@
                         <button type="submit" class="btn btn-danger">Reject</button>
                     {% endbuttons %}
                 </form>
+                </div>
             </div>
             {% endif %}
         {% endif %}
         {% if user.student %}
             {% if not process_instance.process_complete  %}
-                aaaa
+
             <div class="text-center">
                 <form action="" method="post" class="form">
                     {% csrf_token %}
