@@ -13,6 +13,9 @@ class Payment(models.Model):
     payer = models.CharField(max_length=100, blank=True)
     datetime = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return "payment-id:{}-amount:{}".format(self.id, self.amount)
+
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -23,7 +26,7 @@ class Student(models.Model):
 
 
 class Process(models.Model):
-    name = models.CharField(max_length=100, blank=False)
+    name = models.CharField(max_length=100, blank=False, unique=True)
     task_start = models.ForeignKey('Task', blank=True, null=True, related_name='+')
 
     # task_end = models.ForeignKey('Task', blank=True, null=True, related_name='+')
@@ -33,7 +36,7 @@ class Process(models.Model):
 
 
 class Task(models.Model):
-    name = models.CharField(max_length=100, blank=False)
+    name = models.CharField(max_length=100, blank=False, unique=True)
     process = models.ForeignKey(Process, blank=False)
     description = models.CharField(max_length=1000, blank=False)
     group = models.ForeignKey(Group, blank=True, null=True)
@@ -53,6 +56,9 @@ class ProcessInstance(models.Model):
     student = models.ForeignKey(Student, blank=True, null=True)
     process = models.ForeignKey(Process, blank=False)
     current_task = models.ForeignKey('TaskInstance', blank=True, null=True, related_name='+')
+
+    class Meta:
+        unique_together = ("student", "process")
 
     def process_complete(self):
         return self.current_task.task.end_task and self.current_task.status == 'accept'
@@ -88,6 +94,9 @@ class TaskInstance(models.Model):
     status = models.CharField(max_length=20, choices=TASK_STATUS, default='student_pending')
 
     payment = models.ForeignKey(Payment, blank=True, null=True)
+
+    class Meta:
+        unique_together = ("process_instance", "task")
 
     def next_accept(self):
         next_task = self.task.next_task_accept
