@@ -22,28 +22,28 @@
           <th scope="col">Number of Tasks</th>
           <th scope="col"> State </th>
             <th scope="col"> Delete </th>
+            <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
 
             {% for proc_instance in student.processinstance_set.all  %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+{#                    <td> <a href="{% url 'process-instance-view' proc_instance.id %}">{{ proc_instance.process.name }}</a></td>#}
+                    <td> {{ proc_instance.process.name }}</td>
+                    <td>{{ proc_instance.process.task_set.all|length }}</td>
+
                 {% if proc_instance.process_complete %}
-                  <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td> <a>{{ proc_instance.process.name }}</a></td>
-                  <td>{{ proc_instance.process.task_set.all|length }}</td>
-                  <td style="color: #28a745"> Done</td>
-                  <td> <a href="{% url 'process-instance-delete' proc_instance.id %}" >  <img style="height: 20px" src={% static "pics/Delete_icon.png" %}  alt="Delete"> </a></td>
-                </tr>
+                    <td style="color: #28a745"> Done</td>
                 {% else %}
-                  <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td> <a href="{% url 'process-instance-view' proc_instance.id %}">{{ proc_instance.process.name }}</a></td>
-                  <td>{{ proc_instance.process.task_set.all|length }}</td>
-                  <td style="color: #721c24">Pending</td>
-                  <td> <a href="{% url 'process-instance-delete' proc_instance.id %}" >  <img style="height: 20px" src={% static "pics/Delete_icon.png" %}  alt="Delete"> </a></td>
-                    </tr>
+                    <td style="color: #721c24">Pending</td>
                 {% endif %}
+                 <td><a href="{% url 'process-instance-delete' proc_instance.id %}"  data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-sm" data-title="Delete" data-toggle="modal" data-target="#delete" > <span class="fa fa-trash"></span> </button></a></td>
+{#                  <td> <a href="{% url 'process-instance-delete' proc_instance.id %}" >  <img style="height: 20px" src={% static "pics/Delete_icon.png" %}  alt="Delete"> </a></td>#}
+                <td><a href="{% url 'process-instance-view' proc_instance.id %}"  data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-sm" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="fa fa-eye"></span></button></a></td>
+                </tr>
+
             {% endfor %}
       </tbody>
     </table>
@@ -66,7 +66,8 @@
                 {% for proc in processes %}
                     <tr>
                       <th scope="row">{{ forloop.counter }}</th>
-                      <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>
+{#                      <td> <a href="{% url 'process-view' proc.id %}">{{ proc.name }}</a></td>#}
+                      <td> {{ proc.name }}</td>
                       <td>{{ proc.task_set.all|length }}</td>
                       <td><a href="{% url 'process-select' proc.id %}" type="button" class="btn btn-primary" > Select Process </a></td>
                     </tr>

@@ -35,17 +35,21 @@
             <th scope="col">End task</th>
             <th scope="col">Debt</th>
           <th scope="col">Status</th>
+            <th></th>
         </tr>
       </thead>
       <tbody>
             {% for task_instance in process_instance.taskinstance_set.all %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
-                  <td> <a href="{% url 'task-instance-view' task_instance.id %}">{{ task_instance.task.name }}</a></td>
+{#                  <td> <a href="{% url 'task-instance-view' task_instance.id %}">{{ task_instance.task.name }}</a></td>#}
+                    <td>{{ task_instance.task.name }}</td>
                   <td>{{ task_instance.task.description }}</td>
                     <td>{{ task_instance.task.end_task }}</td>
                     <td>{{ task_instance.task.debt }}</td>
                    <td>{{ task_instance.get_status_display }}</td>
+                    <td><a href="{% url 'task-instance-view' task_instance.id %}"  data-toggle="tooltip" data-placement="top" title="Edit"><button class="btn btn-primary btn-sm" data-title="Edit" data-toggle="tooltip" data-target="#edit" ><span class="fa fa-eye"></span></button></a></td>
+
                 </tr>
             {% endfor %}
       </tbody>
