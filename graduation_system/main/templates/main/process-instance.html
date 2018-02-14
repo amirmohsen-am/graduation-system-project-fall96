@@ -54,7 +54,7 @@
 
 
 
-    <h4> Current task : </h4>
+    <h4 style="text-align: center; padding-top: 50px;"> Current task : </h4>
 
 
     <table class="table table-hover" style="border: 2px solid black; ">
@@ -63,6 +63,8 @@
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
+            <th scope="col">Debt</th>
+            <th scope="col">Next task</th>
           <th scope="col">ID</th>
         </tr>
       </thead>
@@ -71,6 +73,8 @@
                   <th scope="row">{{ forloop.counter }}</th>
                   <td> <a href="{% url 'task-instance-view' process_instance.current_task.id %}">{{ process_instance.current_task.task.name }}</a></td>
                   <td>{{ process_instance.current_task.task.description }}</td>
+                    <td>{{ process_instance.current_task.task.debt }}</td>
+                    <td>{{ process_instance.current_task.task.next_task_accept }}</td>
                   <td>{{ process_instance.current_task.task.id }}</td>
                 </tr>
       </tbody>
